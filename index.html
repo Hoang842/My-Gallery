@@ -103,10 +103,10 @@ header p{margin-top:6px;font-size:.8rem;letter-spacing:3px;color:rgba(200,180,25
 <!-- Nút play/pause nhạc -->
 <!-- Nhân vật đi bộ -->
 <div class="walker left-to-right">
-  <img src="character.gif" alt="character">
+  <img src="https://media.tenor.com/bk4RxAAAAC/anime-walk.gif" alt="character">
 </div>
 <div class="walker right-to-left" style="animation-delay:9s;bottom:0px">
-  <img src="character.gif" alt="character">
+  <img src="https://media.tenor.com/bk4RxAAAAC/anime-walk.gif" alt="character">
 </div>
 
 <button id="soundBtn" title="Bật/tắt nhạc">🔇</button>
@@ -419,16 +419,25 @@ loadPhotos();
 const vid = document.getElementById('videoBg');
 vid.muted = true;
 
-document.getElementById('soundBtn').addEventListener('click', async () => {
+// Bấm bất kỳ đâu lần đầu → unmute
+function unlockAudio(){
+  vid.muted = false;
+  vid.play().then(()=>{
+    document.getElementById('soundBtn').textContent = '🔊';
+  }).catch(()=>{
+    vid.muted = true;
+  });
+  document.removeEventListener('click', unlockAudio);
+}
+document.addEventListener('click', unlockAudio);
+
+// Nút loa toggle
+document.getElementById('soundBtn').addEventListener('click', async (e) => {
+  e.stopPropagation();
   if(vid.muted){
     vid.muted = false;
-    try {
-      await vid.play();
-      document.getElementById('soundBtn').textContent = '🔊';
-    } catch(e) {
-      vid.muted = true;
-      document.getElementById('soundBtn').textContent = '🔇';
-    }
+    try{ await vid.play(); document.getElementById('soundBtn').textContent = '🔊'; }
+    catch(err){ vid.muted = true; }
   } else {
     vid.muted = true;
     document.getElementById('soundBtn').textContent = '🔇';
