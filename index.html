@@ -112,13 +112,12 @@ header p{margin-top:6px;font-size:.8rem;letter-spacing:3px;color:rgba(200,180,25
 </audio>
 <div class="video-overlay"></div>
 
-<!-- Nút play/pause nhạc -->
 <!-- Nhân vật đi bộ -->
 <div class="walker left-to-right">
-  <img src="https://media.tenor.com/bk4RxAAAAC/anime-walk.gif" alt="character">
+  <img src="character.gif" alt="character">
 </div>
 <div class="walker right-to-left" style="animation-delay:9s;bottom:0px">
-  <img src="https://media.tenor.com/bk4RxAAAAC/anime-walk.gif" alt="character">
+  <img src="character.gif" alt="character">
 </div>
 
 <div id="volumeWrap">
@@ -215,10 +214,11 @@ header p{margin-top:6px;font-size:.8rem;letter-spacing:3px;color:rgba(200,180,25
 // ============================================================
 const SUPABASE_URL  = 'https://agaswpzosvtqqdpfzgpp.supabase.co';
 const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnYXN3cHpvc3Z0cXFkcGZ6Z3BwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwNjI1OTksImV4cCI6MjA5NDYzODU5OX0.Zrf4Kpm7Dv2HgHoY1tQDhsImQ2PEbRJwm4fH4xZuUrY';
-const ADMIN_PASSWORD = '123456'; // ← ĐỔI MẬT KHẨU NÀY!
+const ADMIN_PASSWORD = '@TeemoCute1349';
 const BUCKET = 'photos';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ============================================================
 //  BACKGROUND: Sao + Sao băng + Mây + Doraemon
@@ -233,48 +233,12 @@ const stars = Array.from({length:220},()=>({x:Math.random()*3000,y:Math.random()
 const shooters=[];
 function spawnShooter(){const angle=(12+Math.random()*28)*Math.PI/180;const len=130+Math.random()*210;const spd=5+Math.random()*5;shooters.push({x:Math.random()*W*1.3,y:Math.random()*H*.4,dx:Math.cos(angle),dy:Math.sin(angle),len,spd,life:0,maxLife:len/spd});}
 
-const clouds=Array.from({length:7},(_,i)=>({x:Math.random()*W*1.6-W*.3,y:50+i*38+Math.random()*30,w:220+Math.random()*300,h:70+Math.random()*70,spd:.1+Math.random()*.2,alpha:.25+Math.random()*.2,puffs:Array.from({length:6+Math.floor(Math.random()*4)},()=>({ox:Math.random(),oy:Math.random()-.25,r:.35+Math.random()*.45}))}));
-
-function drawCloud(c){ctx.save();ctx.globalAlpha=c.alpha;c.puffs.forEach(p=>{const px=c.x+p.ox*c.w,py=c.y+p.oy*c.h+c.h*.5,pr=p.r*c.h;const g=ctx.createRadialGradient(px,py,0,px,py,pr);g.addColorStop(0,'rgba(220,235,255,1)');g.addColorStop(0.5,'rgba(180,210,255,.6)');g.addColorStop(1,'rgba(100,150,220,0)');ctx.beginPath();ctx.ellipse(px,py,pr*1.65,pr,0,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();});ctx.restore();}
-
-function drawDoraemon(cx,cy,scale,t){
-  ctx.save();ctx.translate(cx,cy);ctx.scale(scale,scale);
-  const bob=Math.sin(t*.9)*3;ctx.translate(0,bob);
-  const propSpin=(t*4)%(Math.PI*2);
-  ctx.save();ctx.translate(0,-70);
-  for(let i=0;i<4;i++){ctx.save();ctx.rotate(propSpin+i*Math.PI/2);ctx.fillStyle='rgba(180,230,255,0.85)';ctx.beginPath();ctx.ellipse(18,0,18,5,0,0,Math.PI*2);ctx.fill();ctx.restore();}
-  ctx.beginPath();ctx.arc(0,0,5,0,Math.PI*2);ctx.fillStyle='#aaa';ctx.fill();ctx.restore();
-  ctx.beginPath();ctx.arc(0,-20,42,0,Math.PI*2);ctx.fillStyle='#1aa8d8';ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1.5;ctx.stroke();
-  ctx.beginPath();ctx.arc(0,-14,30,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
-  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-11,-30,10,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(11,-30,10,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#111';ctx.beginPath();ctx.arc(-11,-30,6,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(11,-30,6,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-9,-32,2,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(13,-32,2,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#e8363a';ctx.beginPath();ctx.arc(0,-17,8,0,Math.PI*2);ctx.fill();
-  ctx.strokeStyle='#111';ctx.lineWidth=1.2;ctx.lineCap='round';ctx.beginPath();ctx.arc(0,-7,12,0.15,Math.PI-.15);ctx.stroke();
-  ctx.fillStyle='#e8363a';ctx.beginPath();ctx.ellipse(0,-7,4,3,0,0,Math.PI);ctx.fill();
-  ctx.strokeStyle='#888';ctx.lineWidth=1;
-  [[-8,0],[0,0],[8,0]].forEach(([ox,oy])=>{ctx.beginPath();ctx.moveTo(ox-14,-17+oy);ctx.lineTo(ox-22+oy,-12);ctx.stroke();ctx.beginPath();ctx.moveTo(ox+14,-17+oy);ctx.lineTo(ox+22+oy,-12);ctx.stroke();});
-  ctx.beginPath();ctx.arc(0,-20,43,Math.PI*.15,Math.PI*.85);ctx.lineWidth=4;ctx.strokeStyle='#e8a000';ctx.stroke();
-  ctx.beginPath();ctx.arc(0,-20,40,Math.PI*.18,Math.PI*.82);ctx.lineWidth=5;ctx.strokeStyle='#e8363a';ctx.stroke();
-  ctx.fillStyle='#1aa8d8';ctx.beginPath();ctx.ellipse(0,24,30,22,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1.2;ctx.stroke();
-  ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(0,24,20,10,0,0,Math.PI*2);ctx.fill();
-  const wl=Math.sin(t*.9)*.03;
-  ctx.fillStyle='#1aa8d8';
-  ctx.save();ctx.translate(-34,10);ctx.rotate((-0.3+wl)*Math.PI);ctx.beginPath();ctx.ellipse(0,0,10,20,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(0,18,10,0,Math.PI*2);ctx.fill();ctx.restore();
-  ctx.save();ctx.translate(34,10);ctx.rotate((0.3-wl)*Math.PI);ctx.fillStyle='#1aa8d8';ctx.beginPath();ctx.ellipse(0,0,10,20,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(0,18,10,0,Math.PI*2);ctx.fill();ctx.restore();
-  ctx.fillStyle='#1aa8d8';ctx.save();ctx.translate(-14,42);ctx.beginPath();ctx.ellipse(0,0,10,16,-.1,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(0,13,10,6,0,0,Math.PI*2);ctx.fill();ctx.restore();
-  ctx.save();ctx.translate(14,42);ctx.fillStyle='#1aa8d8';ctx.beginPath();ctx.ellipse(0,0,10,16,.1,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(0,13,10,6,0,0,Math.PI*2);ctx.fill();ctx.restore();
-  ctx.restore();
-}
-
 let t=0;
 function loop(){
   t+=.016; ctx.clearRect(0,0,W,H);
   stars.forEach(s=>{const a=.12+Math.abs(Math.sin(t*s.spd+s.phase))*.65;ctx.beginPath();ctx.arc(s.x%W,s.y%(H*.9),s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.fill();});
   if(Math.random()<.012) spawnShooter();
   for(let i=shooters.length-1;i>=0;i--){const s=shooters[i];s.x+=s.dx*s.spd*4;s.y+=s.dy*s.spd*4;s.life++;const prog=s.life/s.maxLife;const alpha=prog<.2?prog/.2:prog>.7?1-(prog-.7)/.3:1;const tail=Math.min(s.life*s.spd*4,s.len);const tx=s.x-s.dx*tail,ty=s.y-s.dy*tail;const grd=ctx.createLinearGradient(tx,ty,s.x,s.y);grd.addColorStop(0,'rgba(255,255,255,0)');grd.addColorStop(.7,`rgba(180,220,255,${alpha*.55})`);grd.addColorStop(1,`rgba(255,255,255,${alpha})`);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(s.x,s.y);ctx.strokeStyle=grd;ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(s.x,s.y,2,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();if(s.life>=s.maxLife)shooters.splice(i,1);}
-  clouds.forEach(c=>{c.x+=c.spd;if(c.x>W+c.w)c.x=-c.w;drawCloud(c);});
-  const dc=clouds[2];drawDoraemon(dc.x+dc.w*.5,dc.y+dc.h*.3,0.9,t);
   requestAnimationFrame(loop);
 }
 loop();
@@ -322,7 +286,7 @@ async function loadPhotos(){
   document.getElementById('emptyState').style.display = 'none';
   document.querySelectorAll('.photo-card').forEach(c=>c.remove());
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from('photos')
     .select('*')
     .order('created_at', { ascending: false });
@@ -345,18 +309,18 @@ document.getElementById('fileInput').addEventListener('change', async e => {
     const fileName = Date.now() + '_' + file.name.replace(/\s+/g,'_');
 
     // Upload lên Storage
-    const { error: upErr } = await supabase.storage
+    const { error: upErr } = await supabaseClient.storage
       .from(BUCKET)
       .upload(fileName, file, { cacheControl:'3600', upsert:false });
 
     if(upErr){ showToast('Upload thất bại: ' + file.name); continue; }
 
     // Lấy public URL
-    const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(fileName);
+    const { data: urlData } = supabaseClient.storage.from(BUCKET).getPublicUrl(fileName);
     const url = urlData.publicUrl;
 
     // Lưu vào bảng photos
-    const { error: dbErr } = await supabase
+    const { error: dbErr } = await supabaseClient
       .from('photos')
       .insert({ url, name: file.name });
 
@@ -372,10 +336,10 @@ async function deletePhoto(id, fileName){
 
   // Xóa file khỏi storage
   const filePath = fileName.split('/').pop();
-  await supabase.storage.from(BUCKET).remove([filePath]);
+  await supabaseClient.storage.from(BUCKET).remove([filePath]);
 
   // Xóa record khỏi DB
-  const { error } = await supabase.from('photos').delete().eq('id', id);
+  const { error } = await supabaseClient.from('photos').delete().eq('id', id);
   if(error){ showToast('Xóa thất bại!'); return; }
   showToast('Đã xóa ảnh');
   loadPhotos();
@@ -430,36 +394,56 @@ function showToast(msg){
 // Load ảnh khi mở trang
 loadPhotos();
 
-// ===== VOLUME SLIDER =====
+// ===== AUDIO / VOLUME =====
 const vid = document.getElementById('videoBg');
 const music = document.getElementById('bgMusic');
 const slider = document.getElementById('volumeSlider');
 const icon = document.getElementById('volumeIcon');
 
 vid.muted = true;
+music.muted = false;
 music.volume = 0.5;
+slider.value = 0.5;
+icon.textContent = '🔊';
 
-// Unlock audio on first click anywhere
-function unlockAudio(){
-  music.play().catch(()=>{});
-  document.removeEventListener('click', unlockAudio);
-}
-document.addEventListener('click', unlockAudio);
-
-slider.addEventListener('input', () => {
-  music.volume = slider.value;
-  music.muted = slider.value == 0;
-  if(slider.value == 0) icon.textContent = '🔇';
-  else if(slider.value < 0.5) icon.textContent = '🔉';
-  else icon.textContent = '🔊';
+// Đồng bộ nhạc với video
+vid.addEventListener('play', () => { music.currentTime = vid.currentTime; music.play().catch(()=>{}); });
+vid.addEventListener('pause', () => { music.pause(); });
+vid.addEventListener('seeked', () => { music.currentTime = vid.currentTime; });
+vid.addEventListener('timeupdate', () => {
+  if(Math.abs(music.currentTime - vid.currentTime) > 0.3){
+    music.currentTime = vid.currentTime;
+  }
 });
 
-icon.addEventListener('click', () => {
+function playMusic(){
+  music.muted = false;
+  music.volume = Number(slider.value) || 0.5;
+  music.currentTime = vid.currentTime;
+  music.play().catch(()=>{});
+}
+
+window.addEventListener('load', playMusic);
+document.addEventListener('click', playMusic, { once: true });
+
+slider.addEventListener('input', () => {
+  const value = Number(slider.value);
+  music.volume = value;
+  music.muted = value === 0;
+  if(value === 0) icon.textContent = '🔇';
+  else if(value < 0.5) icon.textContent = '🔉';
+  else icon.textContent = '🔊';
+  music.play().catch(()=>{});
+});
+
+icon.addEventListener('click', (e) => {
+  e.stopPropagation();
   if(music.muted || music.volume === 0){
     music.muted = false;
     music.volume = 0.5;
     slider.value = 0.5;
     icon.textContent = '🔊';
+    music.play().catch(()=>{});
   } else {
     music.muted = true;
     slider.value = 0;
