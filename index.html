@@ -13,6 +13,13 @@ body{min-height:100vh;background:#07091a;font-family:Georgia,serif;overflow-x:hi
 #soundBtn{position:fixed;bottom:24px;right:24px;z-index:50;width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);background:rgba(0,0,0,.45);color:white;font-size:1.2rem;cursor:pointer;backdrop-filter:blur(8px);transition:all .3s;display:flex;align-items:center;justify-content:center}
 #soundBtn:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.5)}
 
+/* ===== VOLUME SLIDER ===== */
+#volumeWrap{position:fixed;bottom:24px;right:24px;z-index:50;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.45);border:1.5px solid rgba(255,255,255,.2);border-radius:30px;padding:8px 16px;backdrop-filter:blur(8px)}
+#volumeIcon{font-size:1.1rem;cursor:pointer;user-select:none}
+#volumeSlider{-webkit-appearance:none;width:90px;height:4px;border-radius:2px;background:rgba(255,255,255,.3);outline:none;cursor:pointer}
+#volumeSlider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#fff;cursor:pointer}
+#volumeSlider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#fff;cursor:pointer;border:none}
+
 /* ===== NHÂN VẬT ĐI BỘ ===== */
 .walker{position:fixed;bottom:0px;z-index:5;pointer-events:none;height:120px;animation:walkAcross 18s linear infinite}
 .walker img{height:100%;width:auto}
@@ -94,10 +101,15 @@ header p{margin-top:6px;font-size:.8rem;letter-spacing:3px;color:rgba(200,180,25
 </head>
 <body>
 
-<!-- Video background -->
+<!-- Video background (không có tiếng) -->
 <video id="videoBg" autoplay loop playsinline muted>
   <source src="video.mp4" type="video/mp4">
 </video>
+
+<!-- Nhạc riêng -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mp3">
+</audio>
 <div class="video-overlay"></div>
 
 <!-- Nút play/pause nhạc -->
@@ -109,7 +121,10 @@ header p{margin-top:6px;font-size:.8rem;letter-spacing:3px;color:rgba(200,180,25
   <img src="https://media.tenor.com/bk4RxAAAAC/anime-walk.gif" alt="character">
 </div>
 
-<button id="soundBtn" title="Bật/tắt nhạc">🔇</button>
+<div id="volumeWrap">
+  <span id="volumeIcon">🔊</span>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+</div>
 
 <canvas id="bg"></canvas>
 
@@ -415,32 +430,40 @@ function showToast(msg){
 // Load ảnh khi mở trang
 loadPhotos();
 
-// ===== SOUND TOGGLE =====
+// ===== VOLUME SLIDER =====
 const vid = document.getElementById('videoBg');
-vid.muted = true;
+const music = document.getElementById('bgMusic');
+const slider = document.getElementById('volumeSlider');
+const icon = document.getElementById('volumeIcon');
 
-// Bấm bất kỳ đâu lần đầu → unmute
+vid.muted = true;
+music.volume = 0.5;
+
+// Unlock audio on first click anywhere
 function unlockAudio(){
-  vid.muted = false;
-  vid.play().then(()=>{
-    document.getElementById('soundBtn').textContent = '🔊';
-  }).catch(()=>{
-    vid.muted = true;
-  });
+  music.play().catch(()=>{});
   document.removeEventListener('click', unlockAudio);
 }
 document.addEventListener('click', unlockAudio);
 
-// Nút loa toggle
-document.getElementById('soundBtn').addEventListener('click', async (e) => {
-  e.stopPropagation();
-  if(vid.muted){
-    vid.muted = false;
-    try{ await vid.play(); document.getElementById('soundBtn').textContent = '🔊'; }
-    catch(err){ vid.muted = true; }
+slider.addEventListener('input', () => {
+  music.volume = slider.value;
+  music.muted = slider.value == 0;
+  if(slider.value == 0) icon.textContent = '🔇';
+  else if(slider.value < 0.5) icon.textContent = '🔉';
+  else icon.textContent = '🔊';
+});
+
+icon.addEventListener('click', () => {
+  if(music.muted || music.volume === 0){
+    music.muted = false;
+    music.volume = 0.5;
+    slider.value = 0.5;
+    icon.textContent = '🔊';
   } else {
-    vid.muted = true;
-    document.getElementById('soundBtn').textContent = '🔇';
+    music.muted = true;
+    slider.value = 0;
+    icon.textContent = '🔇';
   }
 });
 </script>
