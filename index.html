@@ -7,9 +7,19 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{min-height:100vh;background:#07091a;font-family:Georgia,serif;overflow-x:hidden;color:#fff}
-#videoBg{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
+#videoBg{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center center;z-index:0;pointer-events:none}
 .video-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);z-index:1;pointer-events:none}
 #bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none}
+#soundBtn{position:fixed;bottom:24px;right:24px;z-index:50;width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);background:rgba(0,0,0,.45);color:white;font-size:1.2rem;cursor:pointer;backdrop-filter:blur(8px);transition:all .3s;display:flex;align-items:center;justify-content:center}
+#soundBtn:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.5)}
+
+/* ===== NHÂN VẬT ĐI BỘ ===== */
+.walker{position:fixed;bottom:0px;z-index:5;pointer-events:none;height:120px;animation:walkAcross 18s linear infinite}
+.walker img{height:100%;width:auto}
+.walker.left-to-right{left:-150px;animation-name:walkLTR}
+.walker.right-to-left{right:-150px;animation-name:walkRTL;transform:scaleX(-1)}
+@keyframes walkLTR{0%{left:-150px}100%{left:calc(100vw + 150px)}}
+@keyframes walkRTL{0%{right:-150px}100%{right:calc(100vw + 150px)}}
 .content{position:relative;z-index:10;padding:0 0 60px}
 header{text-align:center;padding:48px 20px 20px}
 header h1{font-size:2.2rem;font-weight:300;letter-spacing:6px;text-transform:uppercase;color:#e8deff;text-shadow:0 0 30px rgba(160,120,255,.5)}
@@ -85,10 +95,21 @@ header p{margin-top:6px;font-size:.8rem;letter-spacing:3px;color:rgba(200,180,25
 <body>
 
 <!-- Video background -->
-<video id="videoBg" autoplay muted loop playsinline>
+<video id="videoBg" autoplay loop playsinline muted>
   <source src="video.mp4" type="video/mp4">
 </video>
 <div class="video-overlay"></div>
+
+<!-- Nút play/pause nhạc -->
+<!-- Nhân vật đi bộ -->
+<div class="walker left-to-right">
+  <img src="character.gif" alt="character">
+</div>
+<div class="walker right-to-left" style="animation-delay:9s;bottom:0px">
+  <img src="character.gif" alt="character">
+</div>
+
+<button id="soundBtn" title="Bật/tắt nhạc">🔇</button>
 
 <canvas id="bg"></canvas>
 
@@ -179,7 +200,7 @@ header p{margin-top:6px;font-size:.8rem;letter-spacing:3px;color:rgba(200,180,25
 // ============================================================
 const SUPABASE_URL  = 'https://agaswpzosvtqqdpfzgpp.supabase.co';
 const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnYXN3cHpvc3Z0cXFkcGZ6Z3BwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwNjI1OTksImV4cCI6MjA5NDYzODU5OX0.Zrf4Kpm7Dv2HgHoY1tQDhsImQ2PEbRJwm4fH4xZuUrY';
-const ADMIN_PASSWORD = '@TeemoCute1349'; // ← ĐỔI MẬT KHẨU NÀY!
+const ADMIN_PASSWORD = '123456'; // ← ĐỔI MẬT KHẨU NÀY!
 const BUCKET = 'photos';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -197,9 +218,9 @@ const stars = Array.from({length:220},()=>({x:Math.random()*3000,y:Math.random()
 const shooters=[];
 function spawnShooter(){const angle=(12+Math.random()*28)*Math.PI/180;const len=130+Math.random()*210;const spd=5+Math.random()*5;shooters.push({x:Math.random()*W*1.3,y:Math.random()*H*.4,dx:Math.cos(angle),dy:Math.sin(angle),len,spd,life:0,maxLife:len/spd});}
 
-const clouds=Array.from({length:7},(_,i)=>({x:Math.random()*W*1.6-W*.3,y:50+i*38+Math.random()*30,w:160+Math.random()*240,h:50+Math.random()*50,spd:.1+Math.random()*.2,alpha:.07+Math.random()*.11,puffs:Array.from({length:5+Math.floor(Math.random()*4)},()=>({ox:Math.random(),oy:Math.random()-.25,r:.3+Math.random()*.38}))}));
+const clouds=Array.from({length:7},(_,i)=>({x:Math.random()*W*1.6-W*.3,y:50+i*38+Math.random()*30,w:220+Math.random()*300,h:70+Math.random()*70,spd:.1+Math.random()*.2,alpha:.25+Math.random()*.2,puffs:Array.from({length:6+Math.floor(Math.random()*4)},()=>({ox:Math.random(),oy:Math.random()-.25,r:.35+Math.random()*.45}))}));
 
-function drawCloud(c){ctx.save();ctx.globalAlpha=c.alpha;c.puffs.forEach(p=>{const px=c.x+p.ox*c.w,py=c.y+p.oy*c.h+c.h*.5,pr=p.r*c.h;const g=ctx.createRadialGradient(px,py,0,px,py,pr);g.addColorStop(0,'rgba(140,200,255,.75)');g.addColorStop(1,'rgba(60,120,220,0)');ctx.beginPath();ctx.ellipse(px,py,pr*1.65,pr,0,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();});ctx.restore();}
+function drawCloud(c){ctx.save();ctx.globalAlpha=c.alpha;c.puffs.forEach(p=>{const px=c.x+p.ox*c.w,py=c.y+p.oy*c.h+c.h*.5,pr=p.r*c.h;const g=ctx.createRadialGradient(px,py,0,px,py,pr);g.addColorStop(0,'rgba(220,235,255,1)');g.addColorStop(0.5,'rgba(180,210,255,.6)');g.addColorStop(1,'rgba(100,150,220,0)');ctx.beginPath();ctx.ellipse(px,py,pr*1.65,pr,0,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();});ctx.restore();}
 
 function drawDoraemon(cx,cy,scale,t){
   ctx.save();ctx.translate(cx,cy);ctx.scale(scale,scale);
@@ -234,9 +255,6 @@ function drawDoraemon(cx,cy,scale,t){
 let t=0;
 function loop(){
   t+=.016; ctx.clearRect(0,0,W,H);
-  const skyG=ctx.createLinearGradient(0,0,0,H);
-  skyG.addColorStop(0,'#02040f');skyG.addColorStop(.5,'#060b26');skyG.addColorStop(1,'#0a1035');
-  ctx.fillStyle=skyG;ctx.fillRect(0,0,W,H);
   stars.forEach(s=>{const a=.12+Math.abs(Math.sin(t*s.spd+s.phase))*.65;ctx.beginPath();ctx.arc(s.x%W,s.y%(H*.9),s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.fill();});
   if(Math.random()<.012) spawnShooter();
   for(let i=shooters.length-1;i>=0;i--){const s=shooters[i];s.x+=s.dx*s.spd*4;s.y+=s.dy*s.spd*4;s.life++;const prog=s.life/s.maxLife;const alpha=prog<.2?prog/.2:prog>.7?1-(prog-.7)/.3:1;const tail=Math.min(s.life*s.spd*4,s.len);const tx=s.x-s.dx*tail,ty=s.y-s.dy*tail;const grd=ctx.createLinearGradient(tx,ty,s.x,s.y);grd.addColorStop(0,'rgba(255,255,255,0)');grd.addColorStop(.7,`rgba(180,220,255,${alpha*.55})`);grd.addColorStop(1,`rgba(255,255,255,${alpha})`);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(s.x,s.y);ctx.strokeStyle=grd;ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(s.x,s.y,2,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();if(s.life>=s.maxLife)shooters.splice(i,1);}
@@ -396,6 +414,26 @@ function showToast(msg){
 
 // Load ảnh khi mở trang
 loadPhotos();
+
+// ===== SOUND TOGGLE =====
+const vid = document.getElementById('videoBg');
+vid.muted = true;
+
+document.getElementById('soundBtn').addEventListener('click', async () => {
+  if(vid.muted){
+    vid.muted = false;
+    try {
+      await vid.play();
+      document.getElementById('soundBtn').textContent = '🔊';
+    } catch(e) {
+      vid.muted = true;
+      document.getElementById('soundBtn').textContent = '🔇';
+    }
+  } else {
+    vid.muted = true;
+    document.getElementById('soundBtn').textContent = '🔇';
+  }
+});
 </script>
 </body>
 </html>
