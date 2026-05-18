@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome Welcome</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:#07091a;font-family:Georgia,serif;overflow-x:hidden;color:#fff}
+#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.content{position:relative;z-index:10;padding:0 0 60px}
+header{text-align:center;padding:48px 20px 20px}
+header h1{font-size:2.2rem;font-weight:300;letter-spacing:6px;text-transform:uppercase;color:#e8deff;text-shadow:0 0 30px rgba(160,120,255,.5)}
+header p{margin-top:6px;font-size:.8rem;letter-spacing:3px;color:rgba(200,180,255,.4);text-transform:uppercase}
+
+/* ===== NÚT FACEBOOK + INSTAGRAM ===== */
+.fb-btn-wrap{display:flex;justify-content:center;gap:12px;margin:18px 0 10px;flex-wrap:wrap}
+.fb-btn{display:flex;align-items:center;gap:10px;padding:11px 28px;border-radius:50px;border:1.5px solid rgba(80,140,255,.55);background:rgba(30,80,200,.18);color:#a8c8ff;font-size:.88rem;letter-spacing:1px;cursor:pointer;transition:all .3s;text-decoration:none}
+.fb-btn:hover{background:rgba(30,80,220,.35);border-color:rgba(100,160,255,.9);color:#d0e8ff;transform:translateY(-2px)}
+.fb-btn svg{width:18px;height:18px;flex-shrink:0}
+.ig-btn{display:flex;align-items:center;gap:10px;padding:11px 28px;border-radius:50px;border:1.5px solid rgba(200,80,180,.45);background:rgba(150,30,120,.15);color:#f0a8e8;font-size:.88rem;letter-spacing:1px;cursor:pointer;transition:all .3s;text-decoration:none}
+.ig-btn:hover{background:rgba(180,40,140,.28);border-color:rgba(230,100,200,.85);color:#ffd0f5;transform:translateY(-2px)}
+.ig-btn svg{width:18px;height:18px;flex-shrink:0}
+
+/* ===== ADMIN LOGIN ===== */
+.admin-toggle{display:flex;justify-content:center;margin:10px 0 0}
+.admin-toggle button{background:none;border:none;color:rgba(255,255,255,.2);font-size:.72rem;letter-spacing:2px;cursor:pointer;text-transform:uppercase;padding:6px 12px;transition:color .3s}
+.admin-toggle button:hover{color:rgba(255,255,255,.5)}
+.login-box{display:none;flex-direction:column;align-items:center;gap:10px;margin:14px 0;animation:fadeUp .3s ease}
+.login-box.show{display:flex}
+.login-box input{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:30px;padding:9px 20px;color:#fff;font-size:.85rem;width:220px;outline:none;text-align:center;letter-spacing:2px}
+.login-box input::placeholder{color:rgba(255,255,255,.3)}
+.login-box input:focus{border-color:rgba(160,120,255,.6)}
+.login-box button{padding:9px 28px;border-radius:30px;border:1px solid rgba(160,120,255,.5);background:rgba(160,120,255,.15);color:#d0b8ff;font-size:.8rem;letter-spacing:2px;cursor:pointer;text-transform:uppercase;transition:all .3s}
+.login-box button:hover{background:rgba(160,120,255,.3)}
+.admin-badge{display:none;justify-content:center;margin:10px 0;gap:10px;align-items:center}
+.admin-badge.show{display:flex}
+.admin-badge span{font-size:.72rem;letter-spacing:2px;color:rgba(160,220,120,.7);text-transform:uppercase}
+.admin-badge button{background:none;border:none;color:rgba(255,100,100,.5);font-size:.72rem;letter-spacing:1px;cursor:pointer;text-transform:uppercase;text-decoration:underline}
+
+/* ===== UPLOAD (chỉ hiện khi admin) ===== */
+.upload-zone{display:none;justify-content:center;margin:0 20px 32px}
+.upload-zone.show{display:flex}
+.upload-btn{display:flex;align-items:center;gap:10px;padding:13px 32px;border-radius:50px;border:1.5px dashed rgba(100,180,255,.45);background:rgba(100,180,255,.07);color:#a8d8ff;font-size:.88rem;letter-spacing:1px;cursor:pointer;transition:all .3s}
+.upload-btn:hover{background:rgba(100,180,255,.15);border-color:rgba(100,180,255,.8)}
+#fileInput{display:none}
+
+/* ===== LOADING ===== */
+.loading{text-align:center;padding:40px;color:rgba(255,255,255,.3);font-size:.85rem;letter-spacing:2px;text-transform:uppercase;column-span:all}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(30,30,60,.95);border:1px solid rgba(160,120,255,.4);color:#d0b8ff;padding:12px 28px;border-radius:30px;font-size:.82rem;letter-spacing:1px;z-index:200;transition:transform .3s ease;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ===== GALLERY ===== */
+.masonry-grid{columns:3;column-gap:13px;padding:0 18px;max-width:1100px;margin:0 auto}
+@media(max-width:700px){.masonry-grid{columns:2}}
+@media(max-width:420px){.masonry-grid{columns:1}}
+.photo-card{break-inside:avoid;margin-bottom:13px;border-radius:13px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.04);animation:fadeUp .5s ease forwards;cursor:pointer;transition:transform .3s,box-shadow .3s}
+.photo-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 12px 40px rgba(30,140,255,.25);border-color:rgba(80,180,255,.28)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.photo-card img{width:100%;display:block;object-fit:cover}
+.photo-overlay{position:absolute;bottom:0;left:0;right:0;padding:28px 12px 11px;background:linear-gradient(transparent,rgba(3,10,28,.85));opacity:0;transition:opacity .3s;display:flex;justify-content:space-between;align-items:flex-end}
+.photo-card:hover .photo-overlay{opacity:1}
+.photo-actions{display:flex;gap:7px}
+.action-btn{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.09);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.action-btn:hover{background:rgba(255,80,80,.38);border-color:rgba(255,120,120,.75)}
+.action-btn svg{width:13px;height:13px}
+
+/* ===== EMPTY STATE ===== */
+.empty-state{text-align:center;padding:60px 20px;color:rgba(255,255,255,.2);column-span:all}
+.empty-state svg{width:44px;height:44px;margin-bottom:14px;opacity:.28}
+.empty-state p{font-size:.85rem;letter-spacing:2px;text-transform:uppercase}
+
+/* ===== LIGHTBOX ===== */
+.lightbox{position:fixed;inset:0;background:rgba(3,8,22,.93);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:85vh;border-radius:11px;object-fit:contain}
+.lightbox-close{position:absolute;top:18px;right:22px;font-size:2rem;color:rgba(255,255,255,.45);cursor:pointer}
+.lightbox-close:hover{color:white}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="content">
+  <header>
+    <h1>✦ Welcome Welcome</h1>
+    <p>My Profile!</p>
+  </header>
+
+  <!-- Nút mạng xã hội -->
+  <div class="fb-btn-wrap">
+    <a class="fb-btn" href="https://www.facebook.com/hoang.hoang.991482" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="#4a90e2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      Xem Facebook của tôi
+    </a>
+    <a class="ig-btn" href="https://www.instagram.com/hnguyen_qiqi/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="url(#igGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+        <defs>
+          <linearGradient id="igGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#f9a825"/>
+            <stop offset="50%" stop-color="#e91e8c"/>
+            <stop offset="100%" stop-color="#9c27b0"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="#e91e8c" stroke="none"/>
+      </svg>
+      Xem Instagram của tôi
+    </a>
+  </div>
+
+  <!-- Admin login (ẩn, chỉ hiện khi bấm) -->
+  <div class="admin-toggle">
+    <button onclick="toggleLogin()">⚙ Admin</button>
+  </div>
+
+  <div class="login-box" id="loginBox">
+    <input type="password" id="pwInput" placeholder="Nhập mật khẩu" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Đăng nhập</button>
+  </div>
+
+  <div class="admin-badge" id="adminBadge">
+    <span>✓ Đang ở chế độ admin</span>
+    <button onclick="doLogout()">Đăng xuất</button>
+  </div>
+
+  <!-- Upload (chỉ admin thấy) -->
+  <div class="upload-zone" id="uploadZone">
+    <label for="fileInput" class="upload-btn">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="19" height="19">
+        <path d="M12 16V4m0 0L8 8m4-4 4 4M4 20h16"/>
+      </svg>
+      Thêm ảnh vào gallery
+    </label>
+    <input type="file" id="fileInput" accept="image/*" multiple>
+  </div>
+
+  <!-- Gallery -->
+  <div class="masonry-grid" id="gallery">
+    <div class="loading" id="loadingEl">Đang tải ảnh...</div>
+    <div class="empty-state" id="emptyState" style="display:none">
+      <svg fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="3"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <path d="m21 15-5-5L5 21"/>
+      </svg>
+      <p>Chưa có ảnh nào</p>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">✕</span>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+// ============================================================
+//  CẤU HÌNH SUPABASE
+// ============================================================
+const SUPABASE_URL  = 'https://agaswpzosvtqqdpfzgpp.supabase.co';
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnYXN3cHpvc3Z0cXFkcGZ6Z3BwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwNjI1OTksImV4cCI6MjA5NDYzODU5OX0.Zrf4Kpm7Dv2HgHoY1tQDhsImQ2PEbRJwm4fH4xZuUrY';
+const ADMIN_PASSWORD = '@TeemoCute1349'; // ← ĐỔI MẬT KHẨU NÀY!
+const BUCKET = 'photos';
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ============================================================
+//  BACKGROUND: Sao + Sao băng + Mây + Doraemon
+// ============================================================
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+window.addEventListener('resize', resize); resize();
+
+const stars = Array.from({length:220},()=>({x:Math.random()*3000,y:Math.random()*1400,r:Math.random()*1.1+.15,phase:Math.random()*Math.PI*2,spd:Math.random()*.6+.3}));
+const shooters=[];
+function spawnShooter(){const angle=(12+Math.random()*28)*Math.PI/180;const len=130+Math.random()*210;const spd=5+Math.random()*5;shooters.push({x:Math.random()*W*1.3,y:Math.random()*H*.4,dx:Math.cos(angle),dy:Math.sin(angle),len,spd,life:0,maxLife:len/spd});}
+
+const clouds=Array.from({length:7},(_,i)=>({x:Math.random()*W*1.6-W*.3,y:50+i*38+Math.random()*30,w:160+Math.random()*240,h:50+Math.random()*50,spd:.1+Math.random()*.2,alpha:.07+Math.random()*.11,puffs:Array.from({length:5+Math.floor(Math.random()*4)},()=>({ox:Math.random(),oy:Math.random()-.25,r:.3+Math.random()*.38}))}));
+
+function drawCloud(c){ctx.save();ctx.globalAlpha=c.alpha;c.puffs.forEach(p=>{const px=c.x+p.ox*c.w,py=c.y+p.oy*c.h+c.h*.5,pr=p.r*c.h;const g=ctx.createRadialGradient(px,py,0,px,py,pr);g.addColorStop(0,'rgba(140,200,255,.75)');g.addColorStop(1,'rgba(60,120,220,0)');ctx.beginPath();ctx.ellipse(px,py,pr*1.65,pr,0,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();});ctx.restore();}
+
+function drawDoraemon(cx,cy,scale,t){
+  ctx.save();ctx.translate(cx,cy);ctx.scale(scale,scale);
+  const bob=Math.sin(t*.9)*3;ctx.translate(0,bob);
+  const propSpin=(t*4)%(Math.PI*2);
+  ctx.save();ctx.translate(0,-70);
+  for(let i=0;i<4;i++){ctx.save();ctx.rotate(propSpin+i*Math.PI/2);ctx.fillStyle='rgba(180,230,255,0.85)';ctx.beginPath();ctx.ellipse(18,0,18,5,0,0,Math.PI*2);ctx.fill();ctx.restore();}
+  ctx.beginPath();ctx.arc(0,0,5,0,Math.PI*2);ctx.fillStyle='#aaa';ctx.fill();ctx.restore();
+  ctx.beginPath();ctx.arc(0,-20,42,0,Math.PI*2);ctx.fillStyle='#1aa8d8';ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.beginPath();ctx.arc(0,-14,30,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-11,-30,10,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(11,-30,10,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#111';ctx.beginPath();ctx.arc(-11,-30,6,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(11,-30,6,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-9,-32,2,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(13,-32,2,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#e8363a';ctx.beginPath();ctx.arc(0,-17,8,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#111';ctx.lineWidth=1.2;ctx.lineCap='round';ctx.beginPath();ctx.arc(0,-7,12,0.15,Math.PI-.15);ctx.stroke();
+  ctx.fillStyle='#e8363a';ctx.beginPath();ctx.ellipse(0,-7,4,3,0,0,Math.PI);ctx.fill();
+  ctx.strokeStyle='#888';ctx.lineWidth=1;
+  [[-8,0],[0,0],[8,0]].forEach(([ox,oy])=>{ctx.beginPath();ctx.moveTo(ox-14,-17+oy);ctx.lineTo(ox-22+oy,-12);ctx.stroke();ctx.beginPath();ctx.moveTo(ox+14,-17+oy);ctx.lineTo(ox+22+oy,-12);ctx.stroke();});
+  ctx.beginPath();ctx.arc(0,-20,43,Math.PI*.15,Math.PI*.85);ctx.lineWidth=4;ctx.strokeStyle='#e8a000';ctx.stroke();
+  ctx.beginPath();ctx.arc(0,-20,40,Math.PI*.18,Math.PI*.82);ctx.lineWidth=5;ctx.strokeStyle='#e8363a';ctx.stroke();
+  ctx.fillStyle='#1aa8d8';ctx.beginPath();ctx.ellipse(0,24,30,22,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1.2;ctx.stroke();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(0,24,20,10,0,0,Math.PI*2);ctx.fill();
+  const wl=Math.sin(t*.9)*.03;
+  ctx.fillStyle='#1aa8d8';
+  ctx.save();ctx.translate(-34,10);ctx.rotate((-0.3+wl)*Math.PI);ctx.beginPath();ctx.ellipse(0,0,10,20,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(0,18,10,0,Math.PI*2);ctx.fill();ctx.restore();
+  ctx.save();ctx.translate(34,10);ctx.rotate((0.3-wl)*Math.PI);ctx.fillStyle='#1aa8d8';ctx.beginPath();ctx.ellipse(0,0,10,20,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(0,18,10,0,Math.PI*2);ctx.fill();ctx.restore();
+  ctx.fillStyle='#1aa8d8';ctx.save();ctx.translate(-14,42);ctx.beginPath();ctx.ellipse(0,0,10,16,-.1,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(0,13,10,6,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  ctx.save();ctx.translate(14,42);ctx.fillStyle='#1aa8d8';ctx.beginPath();ctx.ellipse(0,0,10,16,.1,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#1188b8';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(0,13,10,6,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  ctx.restore();
+}
+
+let t=0;
+function loop(){
+  t+=.016; ctx.clearRect(0,0,W,H);
+  const skyG=ctx.createLinearGradient(0,0,0,H);
+  skyG.addColorStop(0,'#02040f');skyG.addColorStop(.5,'#060b26');skyG.addColorStop(1,'#0a1035');
+  ctx.fillStyle=skyG;ctx.fillRect(0,0,W,H);
+  stars.forEach(s=>{const a=.12+Math.abs(Math.sin(t*s.spd+s.phase))*.65;ctx.beginPath();ctx.arc(s.x%W,s.y%(H*.9),s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.fill();});
+  if(Math.random()<.012) spawnShooter();
+  for(let i=shooters.length-1;i>=0;i--){const s=shooters[i];s.x+=s.dx*s.spd*4;s.y+=s.dy*s.spd*4;s.life++;const prog=s.life/s.maxLife;const alpha=prog<.2?prog/.2:prog>.7?1-(prog-.7)/.3:1;const tail=Math.min(s.life*s.spd*4,s.len);const tx=s.x-s.dx*tail,ty=s.y-s.dy*tail;const grd=ctx.createLinearGradient(tx,ty,s.x,s.y);grd.addColorStop(0,'rgba(255,255,255,0)');grd.addColorStop(.7,`rgba(180,220,255,${alpha*.55})`);grd.addColorStop(1,`rgba(255,255,255,${alpha})`);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(s.x,s.y);ctx.strokeStyle=grd;ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(s.x,s.y,2,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();if(s.life>=s.maxLife)shooters.splice(i,1);}
+  clouds.forEach(c=>{c.x+=c.spd;if(c.x>W+c.w)c.x=-c.w;drawCloud(c);});
+  const dc=clouds[2];drawDoraemon(dc.x+dc.w*.5,dc.y+dc.h*.3,0.9,t);
+  requestAnimationFrame(loop);
+}
+loop();
+
+// ============================================================
+//  ADMIN AUTH
+// ============================================================
+let isAdmin = false;
+
+function toggleLogin(){
+  const box = document.getElementById('loginBox');
+  box.classList.toggle('show');
+  if(box.classList.contains('show')) document.getElementById('pwInput').focus();
+}
+
+function doLogin(){
+  const pw = document.getElementById('pwInput').value;
+  if(pw === ADMIN_PASSWORD){
+    isAdmin = true;
+    document.getElementById('loginBox').classList.remove('show');
+    document.getElementById('adminBadge').classList.add('show');
+    document.getElementById('uploadZone').classList.add('show');
+    document.getElementById('pwInput').value = '';
+    showToast('Đăng nhập thành công!');
+    loadPhotos();
+  } else {
+    showToast('Sai mật khẩu!');
+    document.getElementById('pwInput').value = '';
+  }
+}
+
+function doLogout(){
+  isAdmin = false;
+  document.getElementById('adminBadge').classList.remove('show');
+  document.getElementById('uploadZone').classList.remove('show');
+  showToast('Đã đăng xuất');
+  loadPhotos();
+}
+
+// ============================================================
+//  SUPABASE: LOAD + UPLOAD + DELETE ẢNH
+// ============================================================
+async function loadPhotos(){
+  document.getElementById('loadingEl').style.display = 'block';
+  document.getElementById('emptyState').style.display = 'none';
+  document.querySelectorAll('.photo-card').forEach(c=>c.remove());
+
+  const { data, error } = await supabase
+    .from('photos')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  document.getElementById('loadingEl').style.display = 'none';
+
+  if(error){ showToast('Lỗi tải ảnh!'); return; }
+  if(!data || data.length === 0){
+    document.getElementById('emptyState').style.display = 'block';
+    return;
+  }
+  data.forEach((photo, idx) => addCard(photo, idx));
+}
+
+document.getElementById('fileInput').addEventListener('change', async e => {
+  if(!isAdmin){ showToast('Bạn chưa đăng nhập!'); return; }
+  const files = Array.from(e.target.files);
+  for(const file of files){
+    showToast('Đang upload ' + file.name + '...');
+    const fileName = Date.now() + '_' + file.name.replace(/\s+/g,'_');
+
+    // Upload lên Storage
+    const { error: upErr } = await supabase.storage
+      .from(BUCKET)
+      .upload(fileName, file, { cacheControl:'3600', upsert:false });
+
+    if(upErr){ showToast('Upload thất bại: ' + file.name); continue; }
+
+    // Lấy public URL
+    const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(fileName);
+    const url = urlData.publicUrl;
+
+    // Lưu vào bảng photos
+    const { error: dbErr } = await supabase
+      .from('photos')
+      .insert({ url, name: file.name });
+
+    if(dbErr){ showToast('Lưu DB thất bại!'); continue; }
+    showToast('Upload thành công!');
+  }
+  e.target.value = '';
+  loadPhotos();
+});
+
+async function deletePhoto(id, fileName){
+  if(!isAdmin){ showToast('Bạn chưa đăng nhập!'); return; }
+
+  // Xóa file khỏi storage
+  const filePath = fileName.split('/').pop();
+  await supabase.storage.from(BUCKET).remove([filePath]);
+
+  // Xóa record khỏi DB
+  const { error } = await supabase.from('photos').delete().eq('id', id);
+  if(error){ showToast('Xóa thất bại!'); return; }
+  showToast('Đã xóa ảnh');
+  loadPhotos();
+}
+
+function addCard(photo, idx){
+  const gallery = document.getElementById('gallery');
+  const emptyEl = document.getElementById('emptyState');
+  const card = document.createElement('div');
+  card.className = 'photo-card';
+  card.style.animationDelay = (idx * 0.05) + 's';
+
+  const deleteBtn = isAdmin
+    ? `<button class="action-btn" title="Xoá" onclick="deletePhoto('${photo.id}','${photo.url}');event.stopPropagation()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+      </button>`
+    : '';
+
+  card.innerHTML = `
+    <img src="${photo.url}" alt="${photo.name || ''}" loading="lazy">
+    <div class="photo-overlay">
+      <div class="photo-actions">
+        <button class="action-btn" title="Xem" onclick="openLightbox('${photo.url}');event.stopPropagation()">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        </button>
+        ${deleteBtn}
+      </div>
+    </div>`;
+  gallery.insertBefore(card, emptyEl);
+}
+
+function openLightbox(url){
+  document.getElementById('lightboxImg').src = url;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+// ============================================================
+//  TOAST
+// ============================================================
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// Load ảnh khi mở trang
+loadPhotos();
+</script>
+</body>
+</html>
