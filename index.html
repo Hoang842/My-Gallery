@@ -7,7 +7,9 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{min-height:100vh;background:#07091a;font-family:Georgia,serif;overflow-x:hidden;color:#fff}
-#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#videoBg{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
+.video-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);z-index:1;pointer-events:none}
+#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none}
 .content{position:relative;z-index:10;padding:0 0 60px}
 header{text-align:center;padding:48px 20px 20px}
 header h1{font-size:2.2rem;font-weight:300;letter-spacing:6px;text-transform:uppercase;color:#e8deff;text-shadow:0 0 30px rgba(160,120,255,.5)}
@@ -82,12 +84,18 @@ header p{margin-top:6px;font-size:.8rem;letter-spacing:3px;color:rgba(200,180,25
 </head>
 <body>
 
+<!-- Video background -->
+<video id="videoBg" autoplay muted loop playsinline>
+  <source src="video.mp4" type="video/mp4">
+</video>
+<div class="video-overlay"></div>
+
 <canvas id="bg"></canvas>
 
 <div class="content">
   <header>
-    <h1>✦ Welcome To My Profile</h1>
-    <p>QiQi_Em 7 VN!</p>
+    <h1>✦ Welcome To My Profile!</h1>
+    <p>QiQi_Em7 VN</p>
   </header>
 
   <!-- Nút mạng xã hội -->
