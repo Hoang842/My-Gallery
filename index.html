@@ -16,10 +16,9 @@ body{min-height:100vh;background:#000000;font-family:"Cinzel",Georgia,serif;over
               linear-gradient(180deg, #000000 0%, #050508 50%, #000000 100%);}
 
 /* Video nếu vẫn muốn dùng */
-#videoBg{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center center;z-index:1;pointer-events:none}
-.video-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);z-index:2;pointer-events:none}
+.video-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);z-index:2;pointer-events:none;display:none}
 
-#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-events:none}
+#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:4;pointer-events:none}
 
 /* ===== RPG FRAME ===== */
 .rpg-frame{position:fixed;inset:0;z-index:3;pointer-events:none;
@@ -52,8 +51,8 @@ header::before{content:"";position:absolute;bottom:0;left:50%;transform:translat
 header h1{font-size:2.4rem;font-weight:700;letter-spacing:8px;text-transform:uppercase;
   color:#ffffff;
   text-shadow:0 0 10px rgba(255,255,255,.3),0 0 30px rgba(200,210,230,.15);
-  font-family:Georgia,serif}
-header p{margin-top:10px;font-size:.75rem;letter-spacing:4px;color:rgba(160,180,220,.35);text-transform:uppercase;font-family:Georgia,serif}
+  font-family:"Comfortaa",cursive}
+header p{margin-top:10px;font-size:.75rem;letter-spacing:4px;color:rgba(160,180,220,.35);text-transform:uppercase;font-family:"Comfortaa",cursive}
 
 /* ===== NÚT FACEBOOK + INSTAGRAM ===== */
 .fb-btn-wrap{display:flex;justify-content:center;gap:12px;margin:18px 0 10px;flex-wrap:wrap}
@@ -62,7 +61,7 @@ header p{margin-top:10px;font-size:.75rem;letter-spacing:4px;color:rgba(160,180,
   background:rgba(5,5,10,.85);
   color:#e0e0e8;font-size:.8rem;letter-spacing:2px;cursor:pointer;transition:all .3s;text-decoration:none;
   clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
-  text-transform:uppercase;font-family:Georgia,serif}
+  text-transform:uppercase;font-family:"Comfortaa",cursive}
 .fb-btn:hover{background:rgba(15,15,20,.95);border-color:rgba(255,255,255,.3);color:#ffffff;transform:translateY(-2px);box-shadow:0 0 12px rgba(255,255,255,.07)}
 .fb-btn svg{width:16px;height:16px;flex-shrink:0}
 .ig-btn{display:flex;align-items:center;gap:10px;padding:10px 24px;
@@ -70,13 +69,13 @@ header p{margin-top:10px;font-size:.75rem;letter-spacing:4px;color:rgba(160,180,
   background:rgba(5,5,10,.85);
   color:#e0e0e8;font-size:.8rem;letter-spacing:2px;cursor:pointer;transition:all .3s;text-decoration:none;
   clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
-  text-transform:uppercase;font-family:Georgia,serif}
+  text-transform:uppercase;font-family:"Comfortaa",cursive}
 .ig-btn:hover{background:rgba(15,15,20,.95);border-color:rgba(255,255,255,.3);color:#ffffff;transform:translateY(-2px);box-shadow:0 0 12px rgba(255,255,255,.07)}
 .ig-btn svg{width:16px;height:16px;flex-shrink:0}
 
 /* ===== ADMIN LOGIN ===== */
 .admin-toggle{display:flex;justify-content:center;margin:10px 0 0}
-.admin-toggle button{background:none;border:none;color:rgba(150,160,200,.2);font-size:.72rem;letter-spacing:3px;cursor:pointer;text-transform:uppercase;padding:6px 12px;transition:color .3s;font-family:Georgia,serif}
+.admin-toggle button{background:none;border:none;color:rgba(150,160,200,.2);font-size:.72rem;letter-spacing:3px;cursor:pointer;text-transform:uppercase;padding:6px 12px;transition:color .3s;font-family:"Comfortaa",cursive}
 .admin-toggle button:hover{color:rgba(180,190,230,.5)}
 .login-box{display:none;flex-direction:column;align-items:center;gap:10px;margin:14px 0;animation:fadeUp .3s ease}
 .login-box.show{display:flex}
@@ -132,9 +131,9 @@ header p{margin-top:10px;font-size:.75rem;letter-spacing:4px;color:rgba(160,180,
 .lightbox-close:hover{color:white}
 
 /* ===== SKETCH STYLE ===== */
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Patrick+Hand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&family=Nunito:wght@300;400;600;700&display=swap');
 
-body{font-family:"Patrick Hand","Caveat",cursive!important}
+body{font-family:"Comfortaa","Nunito",cursive!important}
 
 /* Sketch overlay on video */
 .sketch-overlay{
@@ -161,7 +160,7 @@ header::before{
 
 header h1{
   font-size:2.6rem!important;
-  font-family:"Caveat",cursive!important;
+  font-family:"Comfortaa",cursive!important;
   font-weight:700!important;
   letter-spacing:4px!important;
   color:#ffffff!important;
@@ -170,7 +169,7 @@ header h1{
 }
 
 header p{
-  font-family:"Caveat",cursive!important;
+  font-family:"Comfortaa",cursive!important;
   font-size:1rem!important;
   color:rgba(255,255,255,0.6)!important;
   letter-spacing:3px!important;
@@ -178,7 +177,7 @@ header p{
 
 /* Sketch buttons */
 .fb-btn, .ig-btn{
-  font-family:"Caveat",cursive!important;
+  font-family:"Comfortaa",cursive!important;
   font-size:1rem!important;
   font-weight:600!important;
   letter-spacing:1px!important;
@@ -223,7 +222,7 @@ header p{
 
 /* Admin toggle sketch */
 .admin-toggle button{
-  font-family:"Caveat",cursive!important;
+  font-family:"Comfortaa",cursive!important;
   font-size:.9rem!important;
   color:rgba(255,255,255,0.3)!important;
   letter-spacing:1px!important;
@@ -232,14 +231,14 @@ header p{
 
 /* Login box sketch */
 .login-box input{
-  font-family:"Caveat",cursive!important;
+  font-family:"Comfortaa",cursive!important;
   border:2px solid rgba(255,255,255,0.4)!important;
   background:rgba(0,0,0,0.5)!important;
   color:#fff!important;
   border-radius:4px!important;
 }
 .login-box button{
-  font-family:"Caveat",cursive!important;
+  font-family:"Comfortaa",cursive!important;
   font-size:1rem!important;
   border:2px solid rgba(255,255,255,0.5)!important;
   background:rgba(0,0,0,0.5)!important;
@@ -259,7 +258,7 @@ header p{
 
 /* Toast sketch */
 .toast{
-  font-family:"Caveat",cursive!important;
+  font-family:"Comfortaa",cursive!important;
   font-size:1rem!important;
   border:2px solid rgba(255,255,255,0.5)!important;
   background:rgba(0,0,0,0.8)!important;
@@ -287,13 +286,13 @@ header p{
 
 /* Loading sketch */
 .loading{
-  font-family:"Caveat",cursive!important;
+  font-family:"Comfortaa",cursive!important;
   font-size:1.1rem!important;
   color:rgba(255,255,255,0.4)!important;
 }
 
 /* Empty state */
-.empty-state p{font-family:"Caveat",cursive!important;font-size:1rem!important}
+.empty-state p{font-family:"Comfortaa",cursive!important;font-size:1rem!important}
 
 /* RPG corners - make them sketch style */
 .rpg-corner{opacity:0.3!important}
@@ -302,7 +301,6 @@ header p{
 
 /* THEME: PASTEL */
 body.theme-pastel{background:#fff0f5!important}
-body.theme-pastel #videoBg{filter:brightness(0.3) saturate(0.5)!important}
 body.theme-pastel .video-overlay{background:rgba(255,220,235,0.7)!important}
 body.theme-pastel header h1{color:#c060a0!important;text-shadow:2px 2px 0 rgba(200,100,160,0.3)!important;-webkit-text-stroke:1px rgba(180,80,140,0.5)!important}
 body.theme-pastel header p{color:rgba(180,80,140,0.6)!important}
@@ -319,7 +317,6 @@ body.theme-pastel .doodle{color:#e080b0}
 
 /* THEME: ICE/OCEAN */
 body.theme-ocean{background:#000d1a!important}
-body.theme-ocean #videoBg{filter:brightness(0.25) hue-rotate(180deg) saturate(1.2)!important}
 body.theme-ocean .video-overlay{background:rgba(0,15,40,0.7)!important}
 body.theme-ocean header h1{color:#60d0ff!important;text-shadow:0 0 20px rgba(60,180,255,.7),0 0 40px rgba(20,120,220,.4),0 0 80px rgba(0,80,180,.2)!important;-webkit-text-stroke:1px rgba(40,160,255,0.5)!important}
 body.theme-ocean header p{color:rgba(60,180,255,.5)!important}
@@ -334,12 +331,10 @@ body.theme-ocean .rpg-corner svg path{stroke:#40c0ff!important}
 body.theme-ocean .rpg-corner svg circle{fill:#40c0ff!important}
 
 /* THEME: SKETCH - already applied globally, just ensure */
-body.theme-sketch #videoBg{filter:grayscale(0.8) brightness(0.4)!important}
 body.theme-sketch .video-overlay{background:rgba(0,0,0,0.55)!important}
-body.theme-sketch header h1{font-family:"Caveat",cursive!important;color:#fff!important}
+body.theme-sketch header h1{font-family:"Comfortaa",cursive!important;color:#fff!important}
 
 /* THEME: GALAXY (default) */
-body.theme-galaxy #videoBg{filter:none!important}
 body.theme-galaxy .video-overlay{background:rgba(0,0,0,0.45)!important}
 body.theme-galaxy header h1{color:#ffffff!important;text-shadow:0 0 10px rgba(255,255,255,.3)!important;-webkit-text-stroke:none!important}
 
@@ -350,32 +345,19 @@ body.theme-galaxy header h1{color:#ffffff!important;text-shadow:0 0 10px rgba(25
   object-fit:cover;object-position:center center;
   z-index:1;pointer-events:none;
   opacity:0;transition:opacity 1s ease;
-  display:block!important;
+  display:none;
 }
-.theme-video.active{opacity:1}
+.theme-video.active{opacity:1;display:block!important;}
 
-/* Override hide video for non-galaxy themes */
-body.theme-sketch #videoBg,
-body.theme-pastel #videoBg,
-body.theme-ocean #videoBg{display:block!important}
-body.theme-sketch .video-overlay,
-body.theme-pastel .video-overlay,
-body.theme-ocean .video-overlay{display:block!important}
 
 /* ===== THEME BACKGROUNDS ===== */
-#themeBg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#themeBg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;pointer-events:none}
 
 /* Hide video when not galaxy */
-body.theme-sketch #videoBg,
-body.theme-pastel #videoBg,
-body.theme-ocean #videoBg{display:none!important}
 body.theme-sketch .video-overlay,
 body.theme-pastel .video-overlay,
-body.theme-ocean .video-overlay{display:none!important}
 
 /* Show video only for galaxy */
-body.theme-galaxy #videoBg{display:block!important}
-body.theme-galaxy .video-overlay{display:block!important}
 </style>
 </head>
 <body>
@@ -547,23 +529,27 @@ function spawnShooter(){const angle=(12+Math.random()*28)*Math.PI/180;const len=
 let t=0;
 function loop(){
   t+=.016; ctx.clearRect(0,0,W,H);
-  stars.forEach(s=>{const a=.12+Math.abs(Math.sin(t*s.spd+s.phase))*.65;ctx.beginPath();ctx.arc(s.x%W,s.y%(H*.9),s.r,0,Math.PI*2);const c=s.phase>3.14?'255,255,255':'220,225,235';ctx.fillStyle=`rgba(${c},${a})`;ctx.fill();});
-  if(Math.random()<.012) spawnShooter();
-  for(let i=shooters.length-1;i>=0;i--){const s=shooters[i];s.x+=s.dx*s.spd*4;s.y+=s.dy*s.spd*4;s.life++;const prog=s.life/s.maxLife;const alpha=prog<.2?prog/.2:prog>.7?1-(prog-.7)/.3:1;const tail=Math.min(s.life*s.spd*4,s.len);const tx=s.x-s.dx*tail,ty=s.y-s.dy*tail;const grd=ctx.createLinearGradient(tx,ty,s.x,s.y);grd.addColorStop(0,'rgba(255,255,255,0)');grd.addColorStop(.7,`rgba(255,255,255,${alpha*.5})`);grd.addColorStop(1,`rgba(255,255,255,${alpha})`);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(s.x,s.y);ctx.strokeStyle=grd;ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(s.x,s.y,2,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();if(s.life>=s.maxLife)shooters.splice(i,1);}
-  // Nebula
-  const nb=ctx.createRadialGradient(W*.3,H*.3,0,W*.3,H*.3,W*.4);nb.addColorStop(0,'rgba(20,30,60,0.04)');nb.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=nb;ctx.fillRect(0,0,W,H);
-  // Moon
-  const mx=W*.78,my=H*.18,mr=W*.055;
-  const mg=ctx.createRadialGradient(mx-mr*.3,my-mr*.3,mr*.1,mx,my,mr);
-  mg.addColorStop(0,'rgba(220,225,240,0.18)');
-  mg.addColorStop(0.6,'rgba(180,190,215,0.08)');
-  mg.addColorStop(1,'rgba(100,110,140,0)');
-  ctx.beginPath();ctx.arc(mx,my,mr,0,Math.PI*2);ctx.fillStyle=mg;ctx.fill();
-  // Moon glow
-  const mg2=ctx.createRadialGradient(mx,my,mr*.5,mx,my,mr*2.5);
-  mg2.addColorStop(0,`rgba(180,190,220,${0.04+Math.sin(t*.2)*.01})`);
-  mg2.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.beginPath();ctx.arc(mx,my,mr*2.5,0,Math.PI*2);ctx.fillStyle=mg2;ctx.fill();
+
+  // Chỉ vẽ sao + sao băng + mặt trăng khi theme galaxy
+  if(currentTheme === 'galaxy'){
+    stars.forEach(s=>{const a=.12+Math.abs(Math.sin(t*s.spd+s.phase))*.65;ctx.beginPath();ctx.arc(s.x%W,s.y%(H*.9),s.r,0,Math.PI*2);const c=s.phase>3.14?'255,255,255':'220,225,235';ctx.fillStyle=`rgba(${c},${a})`;ctx.fill();});
+    if(Math.random()<.012) spawnShooter();
+    for(let i=shooters.length-1;i>=0;i--){const s=shooters[i];s.x+=s.dx*s.spd*4;s.y+=s.dy*s.spd*4;s.life++;const prog=s.life/s.maxLife;const alpha=prog<.2?prog/.2:prog>.7?1-(prog-.7)/.3:1;const tail=Math.min(s.life*s.spd*4,s.len);const tx=s.x-s.dx*tail,ty=s.y-s.dy*tail;const grd=ctx.createLinearGradient(tx,ty,s.x,s.y);grd.addColorStop(0,'rgba(255,255,255,0)');grd.addColorStop(.7,`rgba(255,255,255,${alpha*.5})`);grd.addColorStop(1,`rgba(255,255,255,${alpha})`);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(s.x,s.y);ctx.strokeStyle=grd;ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(s.x,s.y,2,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();if(s.life>=s.maxLife)shooters.splice(i,1);}
+    // Nebula
+    const nb=ctx.createRadialGradient(W*.3,H*.3,0,W*.3,H*.3,W*.4);nb.addColorStop(0,'rgba(20,30,60,0.04)');nb.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=nb;ctx.fillRect(0,0,W,H);
+    // Moon
+    const mx=W*.78,my=H*.18,mr=W*.055;
+    const mg=ctx.createRadialGradient(mx-mr*.3,my-mr*.3,mr*.1,mx,my,mr);
+    mg.addColorStop(0,'rgba(220,225,240,0.18)');
+    mg.addColorStop(0.6,'rgba(180,190,215,0.08)');
+    mg.addColorStop(1,'rgba(100,110,140,0)');
+    ctx.beginPath();ctx.arc(mx,my,mr,0,Math.PI*2);ctx.fillStyle=mg;ctx.fill();
+    const mg2=ctx.createRadialGradient(mx,my,mr*.5,mx,my,mr*2.5);
+    mg2.addColorStop(0,`rgba(180,190,220,${0.04+Math.sin(t*.2)*.01})`);
+    mg2.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath();ctx.arc(mx,my,mr*2.5,0,Math.PI*2);ctx.fillStyle=mg2;ctx.fill();
+  }
+
   requestAnimationFrame(loop);
 }
 loop();
@@ -720,7 +706,7 @@ function showToast(msg){
 loadPhotos();
 
 // currentTheme declared here so loopThemeBg can access it
-let currentTheme = "galaxy";
+var currentTheme = "galaxy";
 
 // ===== THEME CANVAS BACKGROUNDS =====
 const themeBgCanvas = document.getElementById('themeBg');
@@ -759,9 +745,9 @@ const bubbles = Array.from({length:45}, () => ({
 
 // Sóng biển - Ocean
 const waves = [
-  {amp:35, freq:0.006, speed:0.4, color:'rgba(0,60,120,0.5)', yRatio:0.08},
-  {amp:25, freq:0.008, speed:0.6, color:'rgba(0,40,100,0.4)', yRatio:0.11},
-  {amp:20, freq:0.010, speed:0.8, color:'rgba(0,30,80,0.35)', yRatio:0.14},
+  {amp:35, freq:0.006, speed:0.4, color:'rgba(0,60,120,0.15)', yRatio:0.08},
+  {amp:25, freq:0.008, speed:0.6, color:'rgba(0,40,100,0.1)', yRatio:0.11},
+  {amp:20, freq:0.010, speed:0.8, color:'rgba(0,30,80,0.08)', yRatio:0.14},
 ];
 
 let tt = 0;
@@ -775,8 +761,8 @@ function loopThemeBg(){
   if(theme === 'pastel'){
     // Nền hồng nhạt gradient
     const pg = tctx.createLinearGradient(0,0,0,TH);
-    pg.addColorStop(0,'rgba(255,220,235,0.35)');
-    pg.addColorStop(1,'rgba(255,180,210,0.2)');
+    pg.addColorStop(0,'rgba(255,220,235,0)');
+    pg.addColorStop(1,'rgba(255,180,210,0)');
     tctx.fillStyle = pg; tctx.fillRect(0,0,TW,TH);
 
     // Hoa đào rơi
@@ -790,7 +776,7 @@ function loopThemeBg(){
       tctx.save();
       tctx.translate(p.x % TW, p.y);
       tctx.rotate(p.rot);
-      tctx.globalAlpha = p.alpha * 0.8;
+      tctx.globalAlpha = p.alpha * 0.35;
       tctx.fillStyle = p.color;
       tctx.beginPath();
       tctx.ellipse(0, 0, p.size, p.size * 0.55, 0, 0, Math.PI * 2);
@@ -803,18 +789,12 @@ function loopThemeBg(){
   }
 
   else if(theme === 'ocean'){
-    // Nền đại dương
-    const og = tctx.createLinearGradient(0,0,0,TH);
-    og.addColorStop(0,'rgba(0,20,60,0.5)');
-    og.addColorStop(0.5,'rgba(0,40,90,0.4)');
-    og.addColorStop(1,'rgba(0,10,40,0.6)');
-    tctx.fillStyle = og; tctx.fillRect(0,0,TW,TH);
 
     // Tia sáng dưới nước
     for(let i=0;i<5;i++){
       const rx = TW * (0.1 + i * 0.18);
       const rg = tctx.createLinearGradient(rx, 0, rx+30, TH);
-      rg.addColorStop(0,`rgba(40,160,255,${0.025+Math.sin(tt*0.4+i)*.01})`);
+      rg.addColorStop(0,`rgba(40,160,255,${0.008+Math.sin(tt*0.4+i)*.004})`);
       rg.addColorStop(1,'rgba(0,60,160,0)');
       tctx.fillStyle = rg;
       tctx.beginPath();
@@ -851,18 +831,14 @@ function loopThemeBg(){
       tctx.restore();
     });
 
-    // Glow dưới đáy
-    const dg = tctx.createRadialGradient(TW*.5,TH*.8,0,TW*.5,TH*.8,TW*.35);
-    dg.addColorStop(0,`rgba(0,100,200,${0.05+Math.sin(tt*.25)*.02})`);
-    dg.addColorStop(1,'rgba(0,0,0,0)');
-    tctx.fillStyle=dg; tctx.fillRect(0,0,TW,TH);
+
   }
 
   else if(theme === 'sketch'){
     // Nền giấy kem
     const sp = tctx.createLinearGradient(0,0,TW,TH);
-    sp.addColorStop(0,'rgba(245,240,228,0.6)');
-    sp.addColorStop(1,'rgba(240,235,215,0.5)');
+    sp.addColorStop(0,'rgba(245,240,228,0)');
+    sp.addColorStop(1,'rgba(240,235,215,0)');
     tctx.fillStyle = sp; tctx.fillRect(0,0,TW,TH);
     // Grain
     for(let i=0;i<150;i++){
@@ -965,7 +941,10 @@ function setTheme(theme){
     v.classList.remove('active');
     v.pause();
     v.currentTime = 0;
+    v.style.display = 'none';
   });
+  // Hide overlay by default
+  document.querySelector('.video-overlay').style.display = 'none';
   if(currentMusic){
     currentMusic.pause();
     currentMusic.currentTime = 0;
@@ -978,7 +957,12 @@ function setTheme(theme){
   currentVideo = newVideo;
   currentMusic = newMusic;
 
-  if(newVideo) newVideo.classList.add('active');
+  if(newVideo){
+    newVideo.classList.add('active');
+    newVideo.style.display = 'block';
+    // Only show overlay for galaxy and ocean themes
+    document.querySelector('.video-overlay').style.display = theme === 'galaxy' ? 'block' : 'none';
+  }
 
   // Start both at exactly same time
   if(newVideo && newMusic){
