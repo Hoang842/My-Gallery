@@ -412,6 +412,9 @@ body.theme-pastel .video-overlay,
 <!-- RPG Background -->
 <div id="rpgBg"></div>
 <canvas id="themeBg"></canvas>
+<!-- Click to play overlay for Chrome -->
+<div id="clickOverlay" style="position:fixed;inset:0;z-index:999;cursor:pointer;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.01);" onclick="startMedia()"></div>
+
 <div class="rpg-frame"></div>
 <div class="rpg-corner tl"><svg viewBox="0 0 60 60" fill="none"><path d="M2 58 L2 2 L58 2" stroke="#aaaacc" stroke-width="2" opacity="0.6"/><circle cx="2" cy="2" r="3" fill="#aaaacc" opacity="0.8"/><path d="M2 30 L30 2" stroke="#aaaacc" stroke-width="0.5" opacity="0.3"/></svg></div>
 <div class="rpg-corner tr"><svg viewBox="0 0 60 60" fill="none"><path d="M2 58 L2 2 L58 2" stroke="#aaaacc" stroke-width="2" opacity="0.6"/><circle cx="2" cy="2" r="3" fill="#aaaacc" opacity="0.8"/></svg></div>
@@ -905,6 +908,32 @@ icon.addEventListener('click', (e) => {
   }
 });
 
+
+
+// ===== CHROME AUTOPLAY FIX =====
+function startMedia(){
+  const overlay = document.getElementById('clickOverlay');
+  if(overlay) overlay.style.display = 'none';
+  
+  // Play current video
+  if(currentVideo){
+    currentVideo.play().catch(()=>{});
+  }
+  // Play current music
+  if(currentMusic){
+    currentMusic.muted = false;
+    currentMusic.volume = Number(slider.value) || 0.5;
+    currentMusic.play().catch(()=>{});
+  }
+}
+
+// Auto-hide overlay if video plays successfully
+setTimeout(() => {
+  if(currentVideo && !currentVideo.paused){
+    const overlay = document.getElementById('clickOverlay');
+    if(overlay) overlay.style.display = 'none';
+  }
+}, 1000);
 
 // ===== THEME AUTO RANDOM =====
 const themes = ['galaxy','sketch','pastel','ocean'];
