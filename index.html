@@ -130,19 +130,276 @@ header p{margin-top:10px;font-size:.75rem;letter-spacing:4px;color:rgba(160,180,
 .lightbox img{max-width:90vw;max-height:85vh;border-radius:11px;object-fit:contain}
 .lightbox-close{position:absolute;top:18px;right:22px;font-size:2rem;color:rgba(255,255,255,.45);cursor:pointer}
 .lightbox-close:hover{color:white}
+
+/* ===== SKETCH STYLE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Patrick+Hand&display=swap');
+
+body{font-family:"Patrick Hand","Caveat",cursive!important}
+
+/* Sketch overlay on video */
+.sketch-overlay{
+  position:fixed;inset:0;z-index:4;pointer-events:none;
+  background:rgba(255,255,255,0.08);
+  mix-blend-mode:overlay;
+}
+
+/* Main content box - sketch border */
+.content{
+  position:relative;z-index:10;padding:0 0 60px;
+}
+
+header{
+  text-align:center;padding:48px 20px 20px;
+  position:relative;
+}
+
+header::before{
+  content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:70%;height:2px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='4'%3E%3Cpath d='M0,2 Q25,0 50,2 Q75,4 100,2 Q125,0 150,2 Q175,4 200,2' stroke='rgba(255,255,255,0.5)' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x center;
+}
+
+header h1{
+  font-size:2.6rem!important;
+  font-family:"Caveat",cursive!important;
+  font-weight:700!important;
+  letter-spacing:4px!important;
+  color:#ffffff!important;
+  text-shadow:2px 2px 0 rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3)!important;
+  -webkit-text-stroke:1px rgba(255,255,255,0.8);
+}
+
+header p{
+  font-family:"Caveat",cursive!important;
+  font-size:1rem!important;
+  color:rgba(255,255,255,0.6)!important;
+  letter-spacing:3px!important;
+}
+
+/* Sketch buttons */
+.fb-btn, .ig-btn{
+  font-family:"Caveat",cursive!important;
+  font-size:1rem!important;
+  font-weight:600!important;
+  letter-spacing:1px!important;
+  border:2px solid rgba(255,255,255,0.7)!important;
+  background:rgba(0,0,0,0.5)!important;
+  color:#ffffff!important;
+  clip-path:none!important;
+  border-radius:4px!important;
+  box-shadow:2px 2px 0 rgba(255,255,255,0.3),inset 0 0 20px rgba(255,255,255,0.05)!important;
+  position:relative;
+  padding:10px 22px!important;
+}
+
+.fb-btn::before,.ig-btn::before{
+  content:"";position:absolute;inset:2px;
+  border:1px dashed rgba(255,255,255,0.2);
+  border-radius:3px;pointer-events:none;
+}
+
+.fb-btn:hover,.ig-btn:hover{
+  background:rgba(255,255,255,0.15)!important;
+  transform:rotate(-0.5deg) translateY(-2px)!important;
+  box-shadow:3px 3px 0 rgba(255,255,255,0.4)!important;
+}
+
+/* Sketch photo cards */
+.photo-card{
+  border:2px solid rgba(255,255,255,0.5)!important;
+  background:rgba(0,0,0,0.4)!important;
+  border-radius:4px!important;
+  box-shadow:3px 3px 0 rgba(255,255,255,0.2)!important;
+  transform:rotate(0deg);
+  transition:transform .3s,box-shadow .3s!important;
+}
+
+.photo-card:nth-child(odd){transform:rotate(-0.8deg)}
+.photo-card:nth-child(even){transform:rotate(0.6deg)}
+.photo-card:hover{
+  transform:rotate(0deg) translateY(-4px) scale(1.02)!important;
+  box-shadow:4px 4px 0 rgba(255,255,255,0.35)!important;
+}
+
+/* Admin toggle sketch */
+.admin-toggle button{
+  font-family:"Caveat",cursive!important;
+  font-size:.9rem!important;
+  color:rgba(255,255,255,0.3)!important;
+  letter-spacing:1px!important;
+}
+.admin-toggle button:hover{color:rgba(255,255,255,0.6)!important}
+
+/* Login box sketch */
+.login-box input{
+  font-family:"Caveat",cursive!important;
+  border:2px solid rgba(255,255,255,0.4)!important;
+  background:rgba(0,0,0,0.5)!important;
+  color:#fff!important;
+  border-radius:4px!important;
+}
+.login-box button{
+  font-family:"Caveat",cursive!important;
+  font-size:1rem!important;
+  border:2px solid rgba(255,255,255,0.5)!important;
+  background:rgba(0,0,0,0.5)!important;
+  color:#fff!important;
+  border-radius:4px!important;
+  box-shadow:2px 2px 0 rgba(255,255,255,0.2)!important;
+}
+
+/* Volume wrap sketch */
+#volumeWrap{
+  border:2px solid rgba(255,255,255,0.4)!important;
+  background:rgba(0,0,0,0.6)!important;
+  border-radius:4px!important;
+  box-shadow:2px 2px 0 rgba(255,255,255,0.2)!important;
+  clip-path:none!important;
+}
+
+/* Toast sketch */
+.toast{
+  font-family:"Caveat",cursive!important;
+  font-size:1rem!important;
+  border:2px solid rgba(255,255,255,0.5)!important;
+  background:rgba(0,0,0,0.8)!important;
+  color:#fff!important;
+  border-radius:4px!important;
+  box-shadow:3px 3px 0 rgba(255,255,255,0.2)!important;
+}
+
+/* Sketch corner doodles */
+.doodle{
+  position:fixed;pointer-events:none;z-index:9;opacity:0.5;
+  font-size:1.4rem;
+  animation:doodleFloat 4s ease-in-out infinite;
+}
+.doodle:nth-child(2){animation-delay:.5s}
+.doodle:nth-child(3){animation-delay:1s}
+.doodle:nth-child(4){animation-delay:1.5s}
+.doodle:nth-child(5){animation-delay:2s}
+.doodle:nth-child(6){animation-delay:2.5s}
+
+@keyframes doodleFloat{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-6px) rotate(3deg)}
+}
+
+/* Loading sketch */
+.loading{
+  font-family:"Caveat",cursive!important;
+  font-size:1.1rem!important;
+  color:rgba(255,255,255,0.4)!important;
+}
+
+/* Empty state */
+.empty-state p{font-family:"Caveat",cursive!important;font-size:1rem!important}
+
+/* RPG corners - make them sketch style */
+.rpg-corner{opacity:0.3!important}
+
+
+
+/* THEME: PASTEL */
+body.theme-pastel{background:#fff0f5!important}
+body.theme-pastel #videoBg{filter:brightness(0.3) saturate(0.5)!important}
+body.theme-pastel .video-overlay{background:rgba(255,220,235,0.7)!important}
+body.theme-pastel header h1{color:#c060a0!important;text-shadow:2px 2px 0 rgba(200,100,160,0.3)!important;-webkit-text-stroke:1px rgba(180,80,140,0.5)!important}
+body.theme-pastel header p{color:rgba(180,80,140,0.6)!important}
+body.theme-pastel header::before{background:linear-gradient(90deg,transparent,rgba(200,100,160,0.4),transparent)!important}
+body.theme-pastel .fb-btn,.theme-pastel .ig-btn{border-color:rgba(200,100,160,0.6)!important;background:rgba(255,230,240,0.15)!important;color:#c060a0!important;box-shadow:3px 3px 0 rgba(200,100,160,0.3)!important}
+body.theme-pastel .fb-btn:hover,.theme-pastel .ig-btn:hover{background:rgba(255,200,220,0.25)!important;color:#a04080!important}
+body.theme-pastel .photo-card{border-color:rgba(200,100,160,0.3)!important;background:rgba(255,230,240,0.1)!important}
+body.theme-pastel .admin-toggle button{color:rgba(200,100,160,0.35)!important}
+body.theme-pastel .admin-toggle button:hover{color:rgba(200,100,160,0.7)!important}
+body.theme-pastel #volumeWrap{border-color:rgba(200,100,160,0.3)!important;background:rgba(255,220,235,0.15)!important}
+body.theme-pastel .rpg-corner svg path{stroke:#e080b0!important}
+body.theme-pastel .rpg-corner svg circle{fill:#e080b0!important}
+body.theme-pastel .doodle{color:#e080b0}
+
+/* THEME: ICE/OCEAN */
+body.theme-rpg{background:#000d1a!important}
+body.theme-rpg #videoBg{filter:brightness(0.25) hue-rotate(180deg) saturate(1.2)!important}
+body.theme-rpg .video-overlay{background:rgba(0,15,40,0.7)!important}
+body.theme-rpg header h1{color:#60d0ff!important;text-shadow:0 0 20px rgba(60,180,255,.7),0 0 40px rgba(20,120,220,.4),0 0 80px rgba(0,80,180,.2)!important;-webkit-text-stroke:1px rgba(40,160,255,0.5)!important}
+body.theme-rpg header p{color:rgba(60,180,255,.5)!important}
+body.theme-rpg header::before{background:linear-gradient(90deg,transparent,rgba(60,180,255,.5),transparent)!important}
+body.theme-rpg .fb-btn,.theme-rpg .ig-btn{border-color:rgba(60,180,255,.5)!important;background:rgba(0,15,40,.7)!important;color:#60d0ff!important;box-shadow:2px 2px 0 rgba(20,120,220,.3)!important}
+body.theme-rpg .fb-btn:hover,.theme-rpg .ig-btn:hover{background:rgba(0,30,70,.8)!important;color:#a0e8ff!important}
+body.theme-rpg .photo-card{border-color:rgba(60,180,255,.2)!important;background:rgba(0,15,40,.6)!important}
+body.theme-rpg .admin-toggle button{color:rgba(60,180,255,.25)!important}
+body.theme-rpg .admin-toggle button:hover{color:rgba(60,200,255,.6)!important}
+body.theme-rpg #volumeWrap{border-color:rgba(60,180,255,.3)!important;background:rgba(0,15,40,.8)!important}
+body.theme-rpg .rpg-corner svg path{stroke:#40c0ff!important}
+body.theme-rpg .rpg-corner svg circle{fill:#40c0ff!important}
+
+/* THEME: SKETCH - already applied globally, just ensure */
+body.theme-sketch #videoBg{filter:grayscale(0.8) brightness(0.4)!important}
+body.theme-sketch .video-overlay{background:rgba(0,0,0,0.55)!important}
+body.theme-sketch header h1{font-family:"Caveat",cursive!important;color:#fff!important}
+
+/* THEME: GALAXY (default) */
+body.theme-galaxy #videoBg{filter:none!important}
+body.theme-galaxy .video-overlay{background:rgba(0,0,0,0.45)!important}
+body.theme-galaxy header h1{color:#ffffff!important;text-shadow:0 0 10px rgba(255,255,255,.3)!important;-webkit-text-stroke:none!important}
+
+
+/* ===== MULTI VIDEO ===== */
+.theme-video{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  object-fit:cover;object-position:center center;
+  z-index:1;pointer-events:none;
+  opacity:0;transition:opacity 1s ease;
+  display:block!important;
+}
+.theme-video.active{opacity:1}
+
+/* Override hide video for non-galaxy themes */
+body.theme-sketch #videoBg,
+body.theme-pastel #videoBg,
+body.theme-rpg #videoBg{display:block!important}
+body.theme-sketch .video-overlay,
+body.theme-pastel .video-overlay,
+body.theme-rpg .video-overlay{display:block!important}
+
+/* ===== THEME BACKGROUNDS ===== */
+#themeBg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* Hide video when not galaxy */
+body.theme-sketch #videoBg,
+body.theme-pastel #videoBg,
+body.theme-rpg #videoBg{display:none!important}
+body.theme-sketch .video-overlay,
+body.theme-pastel .video-overlay,
+body.theme-rpg .video-overlay{display:none!important}
+
+/* Show video only for galaxy */
+body.theme-galaxy #videoBg{display:block!important}
+body.theme-galaxy .video-overlay{display:block!important}
 </style>
 </head>
 <body>
 
-<!-- Video background (không có tiếng) -->
-<video id="videoBg" autoplay loop playsinline muted>
-  <source src="video.mp4" type="video/mp4">
+<!-- 4 Video backgrounds -->
+<video id="videoBg" class="theme-video active" autoplay loop playsinline muted preload="auto">
+  <source src="video-galaxy.mp4" type="video/mp4">
+</video>
+<video id="videoBg-sketch" class="theme-video" autoplay loop playsinline muted preload="auto">
+  <source src="video-sketch.mp4" type="video/mp4">
+</video>
+<video id="videoBg-pastel" class="theme-video" autoplay loop playsinline muted preload="auto">
+  <source src="video-pastel.mp4" type="video/mp4">
+</video>
+<video id="videoBg-ocean" class="theme-video" autoplay loop playsinline muted preload="auto">
+  <source src="video-ocean.mp4" type="video/mp4">
 </video>
 
-<!-- Nhạc riêng -->
-<audio id="bgMusic" loop>
-  <source src="music.mp3" type="audio/mp3">
-</audio>
+<!-- 4 Nhạc theo theme -->
+<audio id="music-galaxy" loop><source src="music-galaxy.mp3" type="audio/mp3"></audio>
+<audio id="music-sketch" loop><source src="music-sketch.mp3" type="audio/mp3"></audio>
+<audio id="music-pastel" loop><source src="music-pastel.mp3" type="audio/mp3"></audio>
+<audio id="music-ocean" loop><source src="music-ocean.mp3" type="audio/mp3"></audio>
+
 <div class="video-overlay"></div>
 
 <!-- Nhân vật đi bộ -->
@@ -158,8 +415,21 @@ header p{margin-top:10px;font-size:.75rem;letter-spacing:4px;color:rgba(160,180,
   <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
 </div>
 
+<!-- Sketch overlay -->
+<div class="sketch-overlay"></div>
+
+
+<!-- Doodle decorations -->
+<div class="doodle" style="top:8%;left:3%">✦</div>
+<div class="doodle" style="top:15%;right:4%">✧</div>
+<div class="doodle" style="top:5%;left:15%">⋆</div>
+<div class="doodle" style="top:12%;right:15%">✦</div>
+<div class="doodle" style="bottom:20%;left:2%">✧</div>
+<div class="doodle" style="bottom:15%;right:3%">⋆</div>
+
 <!-- RPG Background -->
 <div id="rpgBg"></div>
+<canvas id="themeBg"></canvas>
 <div class="rpg-frame"></div>
 <div class="rpg-corner tl"><svg viewBox="0 0 60 60" fill="none"><path d="M2 58 L2 2 L58 2" stroke="#aaaacc" stroke-width="2" opacity="0.6"/><circle cx="2" cy="2" r="3" fill="#aaaacc" opacity="0.8"/><path d="M2 30 L30 2" stroke="#aaaacc" stroke-width="0.5" opacity="0.3"/></svg></div>
 <div class="rpg-corner tr"><svg viewBox="0 0 60 60" fill="none"><path d="M2 58 L2 2 L58 2" stroke="#aaaacc" stroke-width="2" opacity="0.6"/><circle cx="2" cy="2" r="3" fill="#aaaacc" opacity="0.8"/></svg></div>
@@ -451,60 +721,147 @@ loadPhotos();
 
 // ===== AUDIO / VOLUME =====
 const vid = document.getElementById('videoBg');
-const music = document.getElementById('bgMusic');
 const slider = document.getElementById('volumeSlider');
 const icon = document.getElementById('volumeIcon');
 
 vid.muted = true;
-music.muted = false;
-music.volume = 0.5;
 slider.value = 0.5;
 icon.textContent = '🔊';
 
-// Đồng bộ nhạc với video
-vid.addEventListener('play', () => { music.currentTime = vid.currentTime; music.play().catch(()=>{}); });
-vid.addEventListener('pause', () => { music.pause(); });
-vid.addEventListener('seeked', () => { music.currentTime = vid.currentTime; });
-vid.addEventListener('timeupdate', () => {
-  if(Math.abs(music.currentTime - vid.currentTime) > 0.3){
-    music.currentTime = vid.currentTime;
+// Sync video play events - will be updated when theme changes
+vid.addEventListener('play', () => {
+  if(currentMusic){
+    currentMusic.play().catch(()=>{});
   }
 });
 
-function playMusic(){
-  music.muted = false;
-  music.volume = Number(slider.value) || 0.5;
-  music.currentTime = vid.currentTime;
-  music.play().catch(()=>{});
+function playCurrentMusic(){
+  if(!currentMusic) return;
+  currentMusic.muted = false;
+  currentMusic.volume = Number(slider.value) || 0.5;
+  currentMusic.play().catch(()=>{});
 }
 
-window.addEventListener('load', playMusic);
-document.addEventListener('click', playMusic, { once: true });
+window.addEventListener('load', () => setTimeout(playCurrentMusic, 500));
+document.addEventListener('click', playCurrentMusic, { once: true });
 
 slider.addEventListener('input', () => {
   const value = Number(slider.value);
-  music.volume = value;
-  music.muted = value === 0;
+  if(currentMusic){
+    currentMusic.volume = value;
+    currentMusic.muted = value === 0;
+  }
   if(value === 0) icon.textContent = '🔇';
   else if(value < 0.5) icon.textContent = '🔉';
   else icon.textContent = '🔊';
-  music.play().catch(()=>{});
+  if(currentMusic) currentMusic.play().catch(()=>{});
 });
 
 icon.addEventListener('click', (e) => {
   e.stopPropagation();
-  if(music.muted || music.volume === 0){
-    music.muted = false;
-    music.volume = 0.5;
+  if(!currentMusic) return;
+  if(currentMusic.muted || currentMusic.volume === 0){
+    currentMusic.muted = false;
+    currentMusic.volume = 0.5;
     slider.value = 0.5;
     icon.textContent = '🔊';
-    music.play().catch(()=>{});
+    currentMusic.play().catch(()=>{});
   } else {
-    music.muted = true;
+    currentMusic.muted = true;
     slider.value = 0;
     icon.textContent = '🔇';
   }
 });
+
+const themeBgCanvas = document.getElementById("themeBg") || {style:{}};
+// ===== THEME AUTO RANDOM =====
+const themes = ['galaxy','sketch','pastel','rpg'];
+const themeVideoMap = {
+  galaxy: 'videoBg',
+  sketch: 'videoBg-sketch',
+  pastel: 'videoBg-pastel',
+  rpg:    'videoBg-ocean'
+};
+const themeMusicMap = {
+  galaxy: 'music-galaxy',
+  sketch: 'music-sketch',
+  pastel: 'music-pastel',
+  rpg:    'music-ocean'
+};
+
+// Pick different theme from last visit each refresh
+const lastTheme = sessionStorage.getItem('lastTheme') || '';
+const availableThemes = themes.filter(t => t !== lastTheme);
+const randomTheme = availableThemes[Math.floor(Math.random() * availableThemes.length)];
+
+let currentTheme = randomTheme;
+let currentMusic = null;
+let currentVideo = null;
+
+function setTheme(theme){
+  themes.forEach(t => document.body.classList.remove('theme-'+t));
+  document.body.classList.add('theme-'+theme);
+  currentTheme = theme;
+  sessionStorage.setItem('lastTheme', theme);
+
+  // Stop all videos and music first
+  document.querySelectorAll('.theme-video').forEach(v => {
+    v.classList.remove('active');
+    v.pause();
+    v.currentTime = 0;
+  });
+  if(currentMusic){
+    currentMusic.pause();
+    currentMusic.currentTime = 0;
+  }
+
+  // Get new video and music
+  const newVideo = document.getElementById(themeVideoMap[theme]);
+  const newMusic = document.getElementById(themeMusicMap[theme]);
+
+  currentVideo = newVideo;
+  currentMusic = newMusic;
+
+  if(newVideo) newVideo.classList.add('active');
+
+  // Start both at exactly same time
+  if(newVideo && newMusic){
+    newVideo.currentTime = 0;
+    newMusic.currentTime = 0;
+    newMusic.volume = Number(slider.value) || 0.5;
+    newMusic.muted = false;
+
+    // Play video first, then sync music
+    const playBoth = () => {
+      newVideo.play().then(() => {
+        newMusic.play().catch(()=>{});
+      }).catch(()=>{
+        newMusic.play().catch(()=>{});
+      });
+    };
+
+    // Sync music to video timeupdate
+    newVideo.ontimeupdate = () => {
+      if(Math.abs(newMusic.currentTime - newVideo.currentTime) > 0.5){
+        newMusic.currentTime = newVideo.currentTime;
+      }
+    };
+
+    playBoth();
+  }
+
+  if(themeBgCanvas && themeBgCanvas.style) themeBgCanvas.style.display = "none";
+}
+
+// Auto apply random theme on page load
+// Wait for user interaction first (browser policy)
+document.addEventListener('click', () => {
+  if(currentVideo) currentVideo.play().catch(()=>{});
+  if(currentMusic) currentMusic.play().catch(()=>{});
+}, { once: true });
+
+setTheme(randomTheme);
+
 </script>
 </body>
 </html>
