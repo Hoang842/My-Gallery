@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QiQi_Em7 VN</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:#000;font-family:'Comfortaa',cursive;overflow:hidden;color:#fff}
+
+/* ===== VIDEO BG ===== */
+#videoBg{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  object-fit:cover;z-index:0;pointer-events:none;
+  display:block;opacity:1;transition:opacity 0.8s ease;
+}
+#videoBg.hidden{opacity:0;display:none}
+.video-overlay{display:block;transition:opacity 0.8s ease}
+.video-overlay.hidden{display:none}
+.video-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.45);
+  z-index:1;pointer-events:none;
+}
+
+/* ===== CANVAS ===== */
+#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none}
+
+/* ===== SCREENS ===== */
+#screen1, #screen2{
+  position:fixed;inset:0;z-index:10;
+  transition:opacity 0.8s ease, transform 0.8s ease;
+  background:transparent;
+}
+#screen1{opacity:1;transform:translateX(0);overflow-y:auto;display:flex;align-items:center;justify-content:center}
+#screen2{opacity:0;transform:translateX(100%);pointer-events:none;overflow-y:auto;display:block}
+#screen1.hidden{opacity:0;transform:translateX(-100%);pointer-events:none}
+#screen2.visible{opacity:1;transform:translateX(0);pointer-events:all}
+
+/* ===== SCREEN 1: LANDING ===== */
+.landing{
+  display:flex;flex-direction:column;
+  align-items:center;gap:24px;
+  text-align:center;padding:40px 20px;
+  min-height:100vh;justify-content:center;
+  background:transparent;
+}
+.avatar-wrap{position:relative;width:140px;height:140px}
+.avatar-ring{
+  position:absolute;inset:-5px;border-radius:50%;
+  border:2px solid transparent;
+  background:linear-gradient(135deg,rgba(255,255,255,0.8),rgba(255,255,255,0.1),rgba(255,255,255,0.8)) border-box;
+  -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:destination-out;mask-composite:exclude;
+  animation:spinRing 6s linear infinite;
+}
+@keyframes spinRing{to{transform:rotate(360deg)}}
+.avatar-glow{
+  position:absolute;inset:-15px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.12) 0%,transparent 70%);
+  animation:glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulse{0%,100%{opacity:0.5;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+.avatar{
+  width:140px;height:140px;border-radius:50%;
+  object-fit:cover;border:3px solid rgba(255,255,255,0.5);
+  box-shadow:0 0 30px rgba(255,255,255,0.15);display:block;
+}
+.name{font-size:1.8rem;font-weight:700;letter-spacing:3px;text-shadow:0 0 20px rgba(255,255,255,0.3)}
+.subname{font-size:0.75rem;letter-spacing:3px;color:rgba(255,255,255,0.4);text-transform:uppercase}
+
+/* Music player */
+.music-player{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:50px;padding:10px 20px;
+  backdrop-filter:blur(10px);min-width:220px;
+}
+.music-icon{font-size:1.1rem;animation:musicBounce 0.6s ease infinite alternate}
+@keyframes musicBounce{from{transform:scale(1)}to{transform:scale(1.2)}}
+.music-info{flex:1;text-align:left}
+.music-title{font-size:0.8rem;color:rgba(255,255,255,0.9);letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.music-sub{font-size:0.65rem;color:rgba(255,255,255,0.4);letter-spacing:1px}
+.music-bars{display:flex;align-items:flex-end;gap:2px;height:16px}
+.bar{width:3px;border-radius:2px;background:rgba(255,255,255,0.7);animation:barAnim 0.8s ease infinite alternate}
+.bar:nth-child(1){height:6px;animation-delay:0s}
+.bar:nth-child(2){height:12px;animation-delay:0.15s}
+.bar:nth-child(3){height:8px;animation-delay:0.3s}
+.bar:nth-child(4){height:14px;animation-delay:0.45s}
+.bar:nth-child(5){height:6px;animation-delay:0.6s}
+@keyframes barAnim{from{transform:scaleY(0.4)}to{transform:scaleY(1)}}
+
+/* Enter button */
+.enter-btn{
+  padding:14px 40px;
+  border:1.5px solid rgba(255,255,255,0.35);
+  background:rgba(255,255,255,0.08);
+  color:#fff;font-family:'Comfortaa',cursive;
+  font-size:0.85rem;letter-spacing:3px;
+  border-radius:50px;cursor:pointer;
+  transition:all 0.4s;backdrop-filter:blur(10px);
+}
+.enter-btn:hover{
+  border-color:rgba(255,255,255,0.8);
+  background:rgba(255,255,255,0.15);
+  transform:translateY(-3px);
+  box-shadow:0 8px 25px rgba(255,255,255,0.12);
+}
+
+/* ===== SCREEN 2: GALLERY ===== */
+.gallery-page{
+  width:100%;min-height:100vh;
+  padding:0 0 80px;
+  background:transparent;
+}
+
+/* Back button */
+.back-btn{
+  position:fixed;top:20px;left:20px;z-index:50;
+  background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);
+  color:#fff;padding:8px 18px;border-radius:30px;
+  cursor:pointer;font-family:'Comfortaa',cursive;
+  font-size:0.75rem;letter-spacing:2px;
+  backdrop-filter:blur(8px);transition:all 0.3s;
+}
+.back-btn:hover{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.5)}
+
+/* Profile header */
+.profile-header{
+  display:flex;flex-direction:column;align-items:center;
+  gap:12px;padding:50px 20px 24px;text-align:center;
+}
+.av-wrap{position:relative;width:110px;height:110px}
+.av-ring{
+  position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid transparent;
+  background:linear-gradient(135deg,rgba(255,255,255,0.7),rgba(255,255,255,0.1),rgba(255,255,255,0.7)) border-box;
+  -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:destination-out;mask-composite:exclude;
+  animation:spinRing 6s linear infinite;
+}
+.av-glow{position:absolute;inset:-12px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.1) 0%,transparent 70%);animation:glowPulse 3s ease-in-out infinite}
+.av-img{width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);display:block}
+.profile-name{font-size:1.5rem;font-weight:700;letter-spacing:3px;text-shadow:0 0 15px rgba(255,255,255,0.3)}
+.profile-sub{font-size:0.7rem;letter-spacing:3px;color:rgba(255,255,255,0.35);text-transform:uppercase}
+.social-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.fb-btn,.ig-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 20px;border-radius:50px;
+  font-size:0.78rem;letter-spacing:1px;
+  cursor:pointer;transition:all 0.3s;text-decoration:none;
+  backdrop-filter:blur(8px);
+}
+.fb-btn{border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff}
+.ig-btn{border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff}
+.fb-btn:hover,.ig-btn:hover{background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.5);transform:translateY(-2px)}
+.fb-btn svg,.ig-btn svg{width:15px;height:15px;flex-shrink:0}
+.divider{width:60%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);margin:4px auto}
+
+/* Static gallery */
+.gallery-title{text-align:center;font-size:0.7rem;letter-spacing:4px;color:rgba(255,255,255,0.3);text-transform:uppercase;margin:0 0 16px}
+.masonry{columns:3;column-gap:10px;padding:0 16px;max-width:1100px;margin:0 auto}
+@media(max-width:700px){.masonry{columns:2}}
+@media(max-width:420px){.masonry{columns:1}}
+.s-card{break-inside:avoid;margin-bottom:10px;border-radius:10px;overflow:hidden;position:relative;cursor:pointer;border:1px solid rgba(255,255,255,0.07);transition:transform 0.3s,box-shadow 0.3s;animation:fadeUp 0.5s ease forwards;opacity:0}
+.s-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 10px 30px rgba(0,0,0,0.5);border-color:rgba(255,255,255,0.2)}
+.s-card img{width:100%;display:block;object-fit:cover}
+.s-card .ov{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background 0.3s;display:flex;align-items:center;justify-content:center}
+.s-card:hover .ov{background:rgba(0,0,0,0.3)}
+.s-card .zi{opacity:0;transition:opacity 0.3s;font-size:1.5rem;color:#fff}
+.s-card:hover .zi{opacity:1}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* Lightbox */
+#lb{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:300;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+#lb.open{display:flex}
+#lb img{max-width:88vw;max-height:88vh;border-radius:8px;object-fit:contain}
+.lb-x{position:absolute;top:18px;right:24px;font-size:2rem;color:rgba(255,255,255,0.5);cursor:pointer;transition:color 0.2s}
+.lb-x:hover{color:#fff}
+.lb-p,.lb-n{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1.2rem;transition:all 0.2s}
+.lb-p{left:18px}.lb-n{right:18px}
+.lb-p:hover,.lb-n:hover{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5)}
+.lb-cnt{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-size:0.72rem;letter-spacing:2px;color:rgba(255,255,255,0.4)}
+
+/* Admin */
+.admin-toggle{display:flex;justify-content:center;margin:10px 0 0}
+.admin-toggle button{background:none;border:none;color:rgba(255,255,255,0.2);font-size:0.7rem;letter-spacing:3px;cursor:pointer;text-transform:uppercase;padding:6px 12px;transition:color 0.3s;font-family:'Comfortaa',cursive}
+.admin-toggle button:hover{color:rgba(255,255,255,0.5)}
+.login-box{display:none;flex-direction:column;align-items:center;gap:10px;margin:14px 0}
+.login-box.show{display:flex}
+.login-box input{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:30px;padding:9px 20px;color:#fff;font-size:0.85rem;width:220px;outline:none;text-align:center;font-family:'Comfortaa',cursive}
+.login-box input:focus{border-color:rgba(255,255,255,0.4)}
+.login-box button{padding:9px 28px;border-radius:30px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);color:#fff;font-size:0.8rem;letter-spacing:2px;cursor:pointer;text-transform:uppercase;transition:all 0.3s;font-family:'Comfortaa',cursive}
+.login-box button:hover{background:rgba(255,255,255,0.2)}
+.admin-badge{display:none;justify-content:center;margin:10px 0;gap:10px;align-items:center}
+.admin-badge.show{display:flex}
+.admin-badge span{font-size:0.72rem;letter-spacing:2px;color:rgba(160,220,120,0.7);text-transform:uppercase}
+.admin-badge button{background:none;border:none;color:rgba(255,100,100,0.5);font-size:0.72rem;cursor:pointer;text-transform:uppercase;text-decoration:underline}
+.upload-zone{display:none;justify-content:center;margin:0 20px 24px}
+.upload-zone.show{display:flex}
+.upload-btn{display:flex;align-items:center;gap:10px;padding:12px 28px;border-radius:50px;border:1.5px dashed rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);font-size:0.85rem;letter-spacing:1px;cursor:pointer;transition:all 0.3s}
+.upload-btn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.6)}
+#fileInput{display:none}
+
+/* Supabase gallery */
+.masonry-grid{columns:3;column-gap:10px;padding:0 16px;max-width:1100px;margin:0 auto}
+@media(max-width:700px){.masonry-grid{columns:2}}
+@media(max-width:420px){.masonry-grid{columns:1}}
+.photo-card{break-inside:avoid;margin-bottom:10px;border-radius:10px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);animation:fadeUp 0.5s ease forwards;cursor:pointer;transition:transform 0.3s,box-shadow 0.3s}
+.photo-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 10px 30px rgba(0,0,0,0.5);border-color:rgba(255,255,255,0.2)}
+.photo-card img{width:100%;display:block;object-fit:cover}
+.photo-overlay{position:absolute;bottom:0;left:0;right:0;padding:28px 12px 10px;background:linear-gradient(transparent,rgba(0,0,0,0.7));opacity:0;transition:opacity 0.3s;display:flex;justify-content:flex-end}
+.photo-card:hover .photo-overlay{opacity:1}
+.action-btn{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.action-btn:hover{background:rgba(255,80,80,0.4);border-color:rgba(255,120,120,0.7)}
+.action-btn svg{width:12px;height:12px}
+.empty-state{text-align:center;padding:40px;color:rgba(255,255,255,0.2);column-span:all;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase}
+.loading{text-align:center;padding:40px;color:rgba(255,255,255,0.25);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;column-span:all}
+
+/* Lightbox supabase */
+#lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:300;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+#lightbox.open{display:flex}
+#lightbox img{max-width:88vw;max-height:88vh;border-radius:8px;object-fit:contain}
+.lightbox-close{position:absolute;top:18px;right:24px;font-size:2rem;color:rgba(255,255,255,0.5);cursor:pointer}
+.lightbox-close:hover{color:#fff}
+
+/* Toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(0,0,0,0.85);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:10px 24px;border-radius:30px;font-size:0.8rem;letter-spacing:1px;z-index:400;transition:transform 0.3s ease;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* Volume */
+#volumeWrap{position:fixed;bottom:20px;right:20px;z-index:50;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.15);border-radius:30px;padding:8px 14px;backdrop-filter:blur(8px)}
+#volumeIcon{font-size:1rem;cursor:pointer;user-select:none}
+#volumeSlider{-webkit-appearance:none;width:80px;height:3px;border-radius:2px;background:rgba(255,255,255,0.25);outline:none;cursor:pointer}
+#volumeSlider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#fff;cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- Video bg -->
+<video id="videoBg" autoplay loop playsinline muted preload="auto">
+  <source src="video-bg.mp4" type="video/mp4">
+</video>
+<div class="video-overlay"></div>
+<canvas id="bgCanvas"></canvas>
+
+<!-- Nhạc -->
+<audio id="mainMusic" loop>
+  <source src="music-main.mp3" type="audio/mp3">
+</audio>
+
+<!-- Volume -->
+<div id="volumeWrap">
+  <span id="volumeIcon">🔊</span>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+</div>
+
+<!-- Lightbox static -->
+<div id="lb">
+  <span class="lb-x" onclick="closeLb()">✕</span>
+  <div class="lb-p" onclick="prevLb()">‹</div>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-n" onclick="nextLb()">›</div>
+  <div class="lb-cnt" id="lbCnt"></div>
+</div>
+
+<!-- Lightbox supabase -->
+<div id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">✕</span>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== SCREEN 1: LANDING ===== -->
+<div id="screen1">
+  <div class="landing">
+    <div class="avatar-wrap">
+      <div class="avatar-glow"></div>
+      <div class="avatar-ring"></div>
+      <img class="avatar" src="ZYJ00478.JPG" alt="Avatar">
+    </div>
+    <div class="name">✦ QiQi_Em7 VN ✦</div>
+    <div class="subname">Welcome to my world</div>
+    <div class="music-player">
+      <span class="music-icon">🎵</span>
+      <div class="music-info">
+        <div class="music-title">QiQi_Em7 VN</div>
+        <div class="music-sub">Now Playing</div>
+      </div>
+      <div class="music-bars">
+        <div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </div>
+    <button class="enter-btn" onclick="goToGallery()">✦ Bấm Đây Để Xem Thêm ✦</button>
+  </div>
+</div>
+
+<!-- ===== SCREEN 2: GALLERY ===== -->
+<div id="screen2">
+  <div class="gallery-page">
+
+    <button class="back-btn" onclick="goToLanding()">← Quay Lại</button>
+
+    <!-- Profile header -->
+    <div class="profile-header">
+      <div class="av-wrap">
+        <div class="av-glow"></div>
+        <div class="av-ring"></div>
+        <img class="av-img" src="ZYJ00478.JPG" alt="Avatar">
+      </div>
+      <div class="profile-name">✦ QiQi_Em7 VN ✦</div>
+      <div class="profile-sub">My Profile</div>
+      <div class="social-btns">
+        <a class="fb-btn" href="https://www.facebook.com/hoang.hoang.991482" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="#4a90e2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Facebook
+        </a>
+        <a class="ig-btn" href="https://www.instagram.com/hnguyen_qiqi/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="url(#igG)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15">
+            <defs><linearGradient id="igG" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f9a825"/><stop offset="50%" stop-color="#e91e8c"/><stop offset="100%" stop-color="#9c27b0"/></linearGradient></defs>
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="#e91e8c" stroke="none"/>
+          </svg>
+          Instagram
+        </a>
+      </div>
+      <div class="divider"></div>
+    </div>
+
+    <!-- Static gallery -->
+    <div class="gallery-title">✦ Ảnh Của Tôi ✦</div>
+    <div class="masonry" id="staticGallery"></div>
+
+    <!-- Admin -->
+    <div class="admin-toggle"><button onclick="toggleLogin()">⚙ Admin</button></div>
+    <div class="login-box" id="loginBox">
+      <input type="password" id="pwInput" placeholder="Nhập mật khẩu" onkeydown="if(event.key==='Enter')doLogin()">
+      <button onclick="doLogin()">Đăng nhập</button>
+    </div>
+    <div class="admin-badge" id="adminBadge">
+      <span>✓ Đang ở chế độ admin</span>
+      <button onclick="doLogout()">Đăng xuất</button>
+    </div>
+    <div class="upload-zone" id="uploadZone">
+      <label for="fileInput" class="upload-btn">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="18" height="18"><path d="M12 16V4m0 0L8 8m4-4 4 4M4 20h16"/></svg>
+        Thêm ảnh
+      </label>
+      <input type="file" id="fileInput" accept="image/*" multiple>
+    </div>
+
+    <!-- Supabase gallery -->
+    <div class="gallery-title" style="margin-top:10px">✦ Album ✦</div>
+    <div class="masonry-grid" id="gallery">
+      <div class="loading" id="loadingEl">Đang tải...</div>
+      <div class="empty-state" id="emptyState" style="display:none">Chưa có ảnh nào</div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ===== SUPABASE =====
+const SUPABASE_URL = 'https://agaswpzosvtqqdpfzgpp.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnYXN3cHpvc3Z0cXFkcGZ6Z3BwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwNjI1OTksImV4cCI6MjA5NDYzODU5OX0.Zrf4Kpm7Dv2HgHoY1tQDhsImQ2PEbRJwm4fH4xZuUrY';
+const ADMIN_PASSWORD = '@TeemoCute1349';
+const BUCKET = 'photos';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ===== CANVAS =====
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+window.addEventListener('resize', resize); resize();
+
+const stars = Array.from({length:200},()=>({x:Math.random()*3000,y:Math.random()*1400,r:Math.random()*1.1+0.1,phase:Math.random()*Math.PI*2,spd:Math.random()*0.6+0.3}));
+const shooters=[];
+function spawnShooter(){const angle=(12+Math.random()*28)*Math.PI/180;const len=130+Math.random()*200;const spd=4+Math.random()*5;shooters.push({x:Math.random()*W*1.3,y:Math.random()*H*0.4,dx:Math.cos(angle),dy:Math.sin(angle),len,spd,life:0,maxLife:len/spd});}
+let t=0;
+function loop(){
+  t+=0.016;ctx.clearRect(0,0,W,H);
+  stars.forEach(s=>{const a=0.1+Math.abs(Math.sin(t*s.spd+s.phase))*0.65;ctx.beginPath();ctx.arc(s.x%W,s.y%(H*0.95),s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.fill();});
+  if(Math.random()<0.012) spawnShooter();
+  for(let i=shooters.length-1;i>=0;i--){const s=shooters[i];s.x+=s.dx*s.spd*4;s.y+=s.dy*s.spd*4;s.life++;const prog=s.life/s.maxLife;const alpha=prog<0.2?prog/0.2:prog>0.7?1-(prog-0.7)/0.3:1;const tail=Math.min(s.life*s.spd*4,s.len);const tx=s.x-s.dx*tail,ty=s.y-s.dy*tail;const grd=ctx.createLinearGradient(tx,ty,s.x,s.y);grd.addColorStop(0,'rgba(255,255,255,0)');grd.addColorStop(0.7,`rgba(255,255,255,${alpha*0.5})`);grd.addColorStop(1,`rgba(255,255,255,${alpha})`);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(s.x,s.y);ctx.strokeStyle=grd;ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(s.x,s.y,2,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();if(s.life>=s.maxLife)shooters.splice(i,1);}
+  requestAnimationFrame(loop);
+}
+loop();
+
+// ===== SCREEN SWITCH =====
+function goToGallery(){
+  document.getElementById('screen1').classList.add('hidden');
+  document.getElementById('screen2').classList.add('visible');
+  document.getElementById('videoBg').classList.add('hidden');
+  document.querySelector('.video-overlay').classList.add('hidden');
+  loadPhotos();
+}
+function goToLanding(){
+  document.getElementById('screen1').classList.remove('hidden');
+  document.getElementById('screen2').classList.remove('visible');
+  document.getElementById('videoBg').classList.remove('hidden');
+  document.querySelector('.video-overlay').classList.remove('hidden');
+}
+
+// ===== MUSIC =====
+const music = document.getElementById('mainMusic');
+const slider = document.getElementById('volumeSlider');
+const icon = document.getElementById('volumeIcon');
+music.volume = 0.5; music.muted = true;
+
+function playMusic(){
+  music.muted = false;
+  music.volume = Number(slider.value)||0.5;
+  music.play().catch(()=>{});
+}
+document.addEventListener('click', playMusic, {once:true});
+window.addEventListener('load', ()=>setTimeout(playMusic,500));
+
+slider.addEventListener('input',()=>{
+  const v=Number(slider.value);
+  music.volume=v;music.muted=v===0;
+  icon.textContent=v===0?'🔇':v<0.5?'🔉':'🔊';
+  music.play().catch(()=>{});
+});
+icon.addEventListener('click',e=>{
+  e.stopPropagation();
+  if(music.muted||music.volume===0){music.muted=false;music.volume=0.5;slider.value=0.5;icon.textContent='🔊';music.play().catch(()=>{});}
+  else{music.muted=true;slider.value=0;icon.textContent='🔇';}
+});
+
+// ===== STATIC GALLERY =====
+const staticPhotos=[
+  'image1.jpg','image2.jpg','image3.jpg',
+  'image4.jpg','image5.jpg','image6.jpg',
+  'image7.jpg','image8.jpg','image9.jpg',
+  'image10.jpg','image11.jpg','image12.jpg'
+];
+let lbIdx=0;
+
+function buildStaticGallery(){
+  const sg=document.getElementById('staticGallery');
+  staticPhotos.forEach((src,i)=>{
+    const card=document.createElement('div');
+    card.className='s-card';
+    card.style.animationDelay=(i*0.06)+'s';
+    card.innerHTML=`<img src="${src}" alt="Photo ${i+1}"><div class="ov"><span class="zi">⊕</span></div>`;
+    card.onclick=()=>openLb(i);
+    sg.appendChild(card);
+  });
+}
+
+function openLb(i){lbIdx=i;document.getElementById('lbImg').src=staticPhotos[i];document.getElementById('lbCnt').textContent=`${i+1} / ${staticPhotos.length}`;document.getElementById('lb').classList.add('open');}
+function closeLb(){document.getElementById('lb').classList.remove('open');}
+function prevLb(){lbIdx=(lbIdx-1+staticPhotos.length)%staticPhotos.length;openLb(lbIdx);}
+function nextLb(){lbIdx=(lbIdx+1)%staticPhotos.length;openLb(lbIdx);}
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lb').classList.contains('open'))return;
+  if(e.key==='ArrowLeft')prevLb();
+  if(e.key==='ArrowRight')nextLb();
+  if(e.key==='Escape')closeLb();
+});
+document.getElementById('lb').addEventListener('click',e=>{if(e.target===document.getElementById('lb'))closeLb();});
+buildStaticGallery();
+
+// ===== ADMIN =====
+let isAdmin=false;
+function toggleLogin(){const b=document.getElementById('loginBox');b.classList.toggle('show');if(b.classList.contains('show'))document.getElementById('pwInput').focus();}
+function doLogin(){
+  const pw=document.getElementById('pwInput').value;
+  if(pw===ADMIN_PASSWORD){isAdmin=true;document.getElementById('loginBox').classList.remove('show');document.getElementById('adminBadge').classList.add('show');document.getElementById('uploadZone').classList.add('show');document.getElementById('pwInput').value='';showToast('Đăng nhập thành công!');loadPhotos();}
+  else{showToast('Sai mật khẩu!');document.getElementById('pwInput').value='';}
+}
+function doLogout(){isAdmin=false;document.getElementById('adminBadge').classList.remove('show');document.getElementById('uploadZone').classList.remove('show');showToast('Đã đăng xuất');loadPhotos();}
+
+// ===== SUPABASE GALLERY =====
+async function loadPhotos(){
+  document.getElementById('loadingEl').style.display='block';
+  document.getElementById('emptyState').style.display='none';
+  document.querySelectorAll('.photo-card').forEach(c=>c.remove());
+  const{data,error}=await supabaseClient.from('photos').select('*').order('created_at',{ascending:false});
+  document.getElementById('loadingEl').style.display='none';
+  if(error){showToast('Lỗi tải ảnh!');return;}
+  if(!data||data.length===0){document.getElementById('emptyState').style.display='block';return;}
+  data.forEach((photo,idx)=>addCard(photo,idx));
+}
+
+document.getElementById('fileInput').addEventListener('change',async e=>{
+  if(!isAdmin){showToast('Bạn chưa đăng nhập!');return;}
+  const files=Array.from(e.target.files);
+  for(const file of files){
+    showToast('Đang upload '+file.name+'...');
+    const fileName=Date.now()+'_'+file.name.replace(/\s+/g,'_');
+    const{error:upErr}=await supabaseClient.storage.from(BUCKET).upload(fileName,file,{cacheControl:'3600',upsert:false});
+    if(upErr){showToast('Upload thất bại: '+file.name);continue;}
+    const{data:urlData}=supabaseClient.storage.from(BUCKET).getPublicUrl(fileName);
+    const{error:dbErr}=await supabaseClient.from('photos').insert({url:urlData.publicUrl,name:file.name});
+    if(dbErr){showToast('Lưu DB thất bại!');continue;}
+    showToast('Upload thành công!');
+  }
+  e.target.value='';loadPhotos();
+});
+
+async function deletePhoto(id,fileName){
+  if(!isAdmin){showToast('Bạn chưa đăng nhập!');return;}
+  const filePath=fileName.split('/').pop();
+  await supabaseClient.storage.from(BUCKET).remove([filePath]);
+  const{error}=await supabaseClient.from('photos').delete().eq('id',id);
+  if(error){showToast('Xóa thất bại!');return;}
+  showToast('Đã xóa ảnh');loadPhotos();
+}
+
+function addCard(photo,idx){
+  const gallery=document.getElementById('gallery');
+  const emptyEl=document.getElementById('emptyState');
+  const card=document.createElement('div');
+  card.className='photo-card';
+  card.style.animationDelay=(idx*0.05)+'s';
+  const deleteBtn=isAdmin?`<button class="action-btn" title="Xoá" onclick="deletePhoto('${photo.id}','${photo.url}');event.stopPropagation()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg></button>`:'';
+  card.innerHTML=`<img src="${photo.url}" alt="${photo.name||''}"><div class="photo-overlay"><div style="display:flex;gap:6px">${deleteBtn}</div></div>`;
+  card.onclick=()=>{document.getElementById('lightboxImg').src=photo.url;document.getElementById('lightbox').classList.add('open');};
+  gallery.insertBefore(card,emptyEl);
+}
+
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
+</script>
+</body>
+</html>
